@@ -10,9 +10,9 @@ public class ReviewEntity {
     @Id
     @Column(name = "id")
     private int id;
-    @Basic
-    @Column(name = "restaurant_id")
-    private long restaurantId;
+    @ManyToOne
+    @JoinColumn(name="restaurant_id", nullable=false)
+    private RestaurantEntity restaurant;
     @Basic
     @Column(name = "rating")
     private int rating;
@@ -28,12 +28,12 @@ public class ReviewEntity {
         this.id = id;
     }
 
-    public long getRestaurantId() {
-        return restaurantId;
+    public RestaurantEntity getRestaurant() {
+        return restaurant;
     }
 
-    public void setRestaurantId(long restaurantId) {
-        this.restaurantId = restaurantId;
+    public void setRestaurant(RestaurantEntity restaurant) {
+        this.restaurant = restaurant;
     }
 
     public int getRating() {
@@ -57,11 +57,11 @@ public class ReviewEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReviewEntity that = (ReviewEntity) o;
-        return id == that.id && restaurantId == that.restaurantId && rating == that.rating && Objects.equals(reviewText, that.reviewText);
+        return id == that.id && restaurant.getId() == that.restaurant.getId() && rating == that.rating && Objects.equals(reviewText, that.reviewText);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, restaurantId, rating, reviewText);
+        return Objects.hash(id, restaurant, rating, reviewText);
     }
 }

@@ -2,6 +2,7 @@ package org.example.restaurant.model;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "restaurant")
@@ -13,6 +14,9 @@ public class RestaurantEntity {
     @Basic
     @Column(name = "name")
     private String name;
+
+    @OneToMany(mappedBy="restaurant")
+    private Set<ReviewEntity> reviews;
 
     public int getId() {
         return id;
