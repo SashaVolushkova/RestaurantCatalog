@@ -9,22 +9,22 @@ public class ReviewEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
-    private int id;
+    private Long id;
     @ManyToOne
     @JoinColumn(name="restaurant_id", nullable=false)
     private RestaurantEntity restaurant;
     @Basic
     @Column(name = "rating")
-    private int rating;
+    private Integer rating;
     @Basic
     @Column(name = "review_text")
     private String reviewText;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -57,7 +57,8 @@ public class ReviewEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReviewEntity that = (ReviewEntity) o;
-        return id == that.id && restaurant.getId() == that.restaurant.getId() && rating == that.rating && Objects.equals(reviewText, that.reviewText);
+        return Objects.equals(id, that.id) && Objects.equals(restaurant.getId(),that.restaurant.getId())
+                && Objects.equals(rating, that.rating) && Objects.equals(reviewText, that.reviewText);
     }
 
     @Override
