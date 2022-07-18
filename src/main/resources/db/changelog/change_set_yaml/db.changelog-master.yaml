@@ -1,0 +1,65 @@
+databaseChangeLog:
+- changeSet:
+    id: 1658179667826-1
+    author: Александра (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: table_name_pk
+            name: id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(200)
+        tableName: restaurant
+- changeSet:
+    id: 1658179667826-2
+    author: Александра (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: review_pk
+            name: id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: restaurant_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: rating
+            type: INTEGER
+        - column:
+            name: review_text
+            type: VARCHAR(256)
+        tableName: review
+- changeSet:
+    id: 1658179667826-3
+    author: Александра (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: restaurant_id
+        baseTableName: review
+        constraintName: review_restaurant_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: restaurant
+        validate: true
+

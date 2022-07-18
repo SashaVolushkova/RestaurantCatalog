@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'org.liquibase.gradle' version '2.1.0'
 }
 
 group 'org.example'
@@ -23,8 +24,25 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+
+    liquibaseRuntime 'org.liquibase:liquibase-core:4.9.1'
+    liquibaseRuntime 'org.yaml:snakeyaml:1.30'
+    //liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:3.0.2'
+    liquibaseRuntime 'info.picocli:picocli:4.6.3'
+    liquibaseRuntime("org.postgresql:postgresql")
 }
 
 test {
     useJUnitPlatform()
+}
+
+liquibase {
+    activities {
+        main {
+            changeLogFile 'src/main/resources/db/changelog/change_set_yaml/db.changelog-master.yaml'
+            url 'jdbc:postgresql://localhost:5432/postgres'
+            username 'postgres'
+            password 'qwerty'
+        }
+    }
 }
