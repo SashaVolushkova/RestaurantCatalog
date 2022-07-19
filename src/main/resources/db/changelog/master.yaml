@@ -11,3 +11,9 @@ databaseChangeLog:
         changes:
           - sqlFile:
               path: \db\changelog\change_sets\review.sql
+    - changeSet:
+        id: 3
+        author: alexandra.volushkova
+        changes:
+          - sqlFile:
+              path: \db\changelog\change_sets\create_test_table.sql
