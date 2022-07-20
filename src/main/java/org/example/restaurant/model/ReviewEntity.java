@@ -20,6 +20,16 @@ public class ReviewEntity {
     @Column(name = "review_text")
     private String reviewText;
 
+    public ReviewEntity() {
+
+    }
+
+    public ReviewEntity(RestaurantEntity restaurantEntity, String text, Integer rate) {
+        this.restaurant = restaurantEntity;
+        this.reviewText = text;
+        this.rating = rate;
+    }
+
     public Long getId() {
         return id;
     }

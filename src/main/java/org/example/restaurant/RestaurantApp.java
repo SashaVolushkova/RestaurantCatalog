@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "org.example.restaurant.repository")
-public class Restaurant {
+public class RestaurantApp {
     public static void main(String[] args) {
-        SpringApplication.run(Restaurant.class, args);
+        SpringApplication.run(RestaurantApp.class, args);
     }
 }
