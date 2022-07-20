@@ -17,3 +17,9 @@ databaseChangeLog:
         changes:
           - sqlFile:
               path: \db\changelog\change_sets\create_test_table.sql
+    - changeSet:
+        id: 4
+        author: alexandra.volushkova
+        changes:
+          - sqlFile:
+              path: \db\changelog\change_sets\add_phone_number_to_restaurant.sql

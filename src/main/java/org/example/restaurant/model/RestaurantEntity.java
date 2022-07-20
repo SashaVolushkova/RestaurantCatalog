@@ -15,6 +15,10 @@ public class RestaurantEntity {
     @Column(name = "name")
     private String name;
 
+    @Basic
+    @Column(name = "telephone_number")
+    private String telephoneNumber;
+
     @OneToMany(mappedBy="restaurant")
     private Set<ReviewEntity> reviews;
 
@@ -45,5 +49,13 @@ public class RestaurantEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
+    }
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
     }
 }

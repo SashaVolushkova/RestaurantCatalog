@@ -27,11 +27,29 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    public long createRestaurantByNameAndTelephone(String name, String telephone) {
+        RestaurantEntity restaurant = new RestaurantEntity();
+        restaurant.setName(name);
+        restaurant.setTelephoneNumber(telephone);
+        return restaurantRepository.save(restaurant).getId();
+    }
+
+    @Override
+    public String getRestaurantTelephone(Long id) throws RestaurantNotFoundException {
+        RestaurantEntity restaurantById = getRestaurantById(id);
+        return restaurantById.getTelephoneNumber();
+    }
+
+    @Override
     public String getRestaurantNameById(Long id) throws RestaurantNotFoundException {
+        return getRestaurantById(id).getName();
+    }
+
+    private RestaurantEntity getRestaurantById(Long id) throws RestaurantNotFoundException {
         Optional<RestaurantEntity> byId = restaurantRepository.findById(id);
         if(byId.isEmpty()) {
             throw new RestaurantNotFoundException(id);
         }
-        return byId.get().getName();
+        return byId.get();
     }
 }
