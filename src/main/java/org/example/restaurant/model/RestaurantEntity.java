@@ -18,6 +18,14 @@ public class RestaurantEntity {
     @OneToMany(mappedBy="restaurant")
     private Set<ReviewEntity> reviews;
 
+    public RestaurantEntity() {
+
+    }
+
+    public RestaurantEntity(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }
