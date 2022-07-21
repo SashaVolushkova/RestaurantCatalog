@@ -5,7 +5,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(classes = {
-        Restaurant.class,
+        RestaurantApp.class,
         H2TestProfileJPAConfig.class})
 @ActiveProfiles("test")
 public class AppContextTest {

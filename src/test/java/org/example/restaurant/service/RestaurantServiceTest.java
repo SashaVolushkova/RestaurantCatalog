@@ -33,4 +33,12 @@ class RestaurantServiceTest extends AppContextTest {
         Assertions.assertThrowsExactly(RestaurantNotFoundException.class,
                 () -> restaurantService.getRestaurantNameById(333L));
     }
+
+    @Test
+    void getTelephoneNumber() throws RestaurantNotFoundException {
+        long number = restaurantService.createRestaurantByNameAndTelephone("number", "+79999999999");
+        String restaurantTelephone = restaurantService.getRestaurantTelephone(number);
+        assertEquals("+79999999999", restaurantTelephone);
+        Assertions.assertThrows(RestaurantNotFoundException.class, () -> restaurantService.getRestaurantTelephone(444L));
+    }
 }
