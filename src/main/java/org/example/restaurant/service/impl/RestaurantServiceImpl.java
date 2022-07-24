@@ -1,5 +1,6 @@
 package org.example.restaurant.service.impl;
 
+import org.example.restaurant.exception.FoundationDateIsExpiredException;
 import org.example.restaurant.exception.RestaurantNotFoundException;
 import org.example.restaurant.model.RestaurantEntity;
 import org.example.restaurant.repository.RestaurantRepository;
@@ -7,6 +8,7 @@ import org.example.restaurant.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -24,6 +26,24 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurant.setName(name);
         RestaurantEntity save = restaurantRepository.save(restaurant);
         return save.getId();
+    }
+
+    @Override
+    public long createRestaurantByNameAndDate(String name, LocalDate foundationDate) throws FoundationDateIsExpiredException {
+        if(foundationDate == null || LocalDate.now().isBefore(foundationDate)) {
+            throw new FoundationDateIsExpiredException(name, foundationDate);
+        }
+        RestaurantEntity restaurant = new RestaurantEntity();
+        restaurant.setName(name);
+        restaurant.setFoundationDate(foundationDate);
+        RestaurantEntity save = restaurantRepository.save(restaurant);
+        return save.getId();
+    }
+
+    @Override
+    public LocalDate getFoundationDate(Long id) throws RestaurantNotFoundException {
+        RestaurantEntity restaurantById = getRestaurantById(id);
+        return restaurantById.getFoundationDate();
     }
 
     @Override

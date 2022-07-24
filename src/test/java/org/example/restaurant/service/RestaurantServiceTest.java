@@ -1,12 +1,20 @@
 package org.example.restaurant.service;
 
+import net.bytebuddy.asm.Advice;
 import org.example.restaurant.AppContextTest;
+import org.example.restaurant.exception.FoundationDateIsExpiredException;
 import org.example.restaurant.exception.RestaurantNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.*;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class RestaurantServiceTest extends AppContextTest {
 
@@ -40,5 +48,21 @@ class RestaurantServiceTest extends AppContextTest {
         String restaurantTelephone = restaurantService.getRestaurantTelephone(number);
         assertEquals("+79999999999", restaurantTelephone);
         Assertions.assertThrows(RestaurantNotFoundException.class, () -> restaurantService.getRestaurantTelephone(444L));
+    }
+
+    @Test
+    void createRestaurantByNameAndDateExpirationDate() throws FoundationDateIsExpiredException, RestaurantNotFoundException {
+        MockedStatic<LocalDate> localDateMockedStatic = mockStatic(LocalDate.class, CALLS_REAL_METHODS);
+        LocalDate defaultNow = LocalDate.of(2014, 12, 22);
+        localDateMockedStatic.when(LocalDate::now).thenReturn(defaultNow);
+
+        Assertions.assertThrowsExactly(FoundationDateIsExpiredException.class,
+                () -> restaurantService.createRestaurantByNameAndDate("test", LocalDate.of(2015, 12, 12)),
+                "Restaurant with name \"" + "test" + "\"" +
+                        "has foundation date " + LocalDate.now().plusDays(5));
+
+        long test = restaurantService.createRestaurantByNameAndDate("test", LocalDate.of(2012, 12, 12));
+        LocalDate foundationDate = restaurantService.getFoundationDate(test);
+        assertEquals(LocalDate.of(2012, 12, 12), foundationDate);
     }
 }
