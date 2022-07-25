@@ -2,6 +2,7 @@ package org.example.restaurant.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -20,8 +21,8 @@ public class RestaurantEntity {
     @Column(name = "telephone_number")
     private String telephoneNumber;
 
-    @OneToMany(mappedBy="restaurant")
-    private Set<ReviewEntity> reviews;
+    @OneToMany(mappedBy="restaurant", fetch = FetchType.EAGER)
+    private List<ReviewEntity> reviews;
 
     @Basic
     private LocalDate foundationDate;
@@ -77,5 +78,9 @@ public class RestaurantEntity {
 
     public void setFoundationDate(LocalDate foundationDate) {
         this.foundationDate = foundationDate;
+    }
+
+    public List<ReviewEntity> getReviews() {
+        return reviews;
     }
 }
