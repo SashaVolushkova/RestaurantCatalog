@@ -10,6 +10,8 @@ import org.example.restaurant.model.RestaurantEntity;
 import org.example.restaurant.service.RestaurantService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 public class RestaurantController {
     private final RestaurantMapper restaurantMapper;
@@ -22,7 +24,7 @@ public class RestaurantController {
     }
 
     @PostMapping("/restaurant")
-    public RestaurantOutDTO addRestaurant(@RequestBody RestaurantInDTO restaurant) throws NumberParseException {
+    public RestaurantOutDTO addRestaurant(@Valid @RequestBody RestaurantInDTO restaurant) throws NumberParseException {
         RestaurantEntity restaurantEntity = restaurantService.createRestaurant(restaurant);
         return restaurantMapper.restaurantEntityToRestaurantOutDTO(restaurantEntity);
     }

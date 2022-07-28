@@ -1,5 +1,6 @@
 package org.example.restaurant.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.assertj.core.util.Lists;
@@ -123,5 +124,21 @@ class RestaurantControllerTest extends AppContextTest {
                 .andExpect(status().isOk()) // check status
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON)) // check media typeof response
                 .andExpect(content().json(afterAddReviewRestaurant)); // check response body
+    }
+
+    @Test
+    public void validationTest() throws Exception {
+        ObjectMapper objectMapper = new JsonMapper();
+        RestaurantInDTO dto = RestaurantInDTO.builder()
+                .name("")
+                .foundationDate(LocalDate.of(2012, 12, 12))
+                .telephoneNumber("+7 (999) 999 99 99")
+                .build();
+
+        this.mockMvc.perform(post("/restaurant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andDo(print()) //print response in console
+                .andExpect(status().is4xxClientError());// check status
     }
 }
