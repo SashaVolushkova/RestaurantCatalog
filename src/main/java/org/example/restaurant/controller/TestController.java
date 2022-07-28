@@ -1,6 +1,6 @@
 package org.example.restaurant.controller;
 
-import org.example.restaurant.dto.TestDto;
+import org.example.restaurant.dto.out.TestDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

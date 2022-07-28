@@ -1,4 +1,4 @@
-package org.example.restaurant.dto;
+package org.example.restaurant.dto.out;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,7 +1,10 @@
 package org.example.restaurant.service.impl;
 
+import com.google.i18n.phonenumbers.NumberParseException;
+import org.example.restaurant.dto.in.RestaurantInDTO;
 import org.example.restaurant.exception.FoundationDateIsExpiredException;
 import org.example.restaurant.exception.RestaurantNotFoundException;
+import org.example.restaurant.mapper.RestaurantMapper;
 import org.example.restaurant.model.RestaurantEntity;
 import org.example.restaurant.repository.RestaurantRepository;
 import org.example.restaurant.service.RestaurantService;
@@ -14,10 +17,13 @@ import java.util.Optional;
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
     private final RestaurantRepository restaurantRepository;
+    private final RestaurantMapper restaurantMapper;
 
     @Autowired
-    public RestaurantServiceImpl(RestaurantRepository restaurantRepository) {
+    public RestaurantServiceImpl(RestaurantRepository restaurantRepository,
+                                 RestaurantMapper restaurantMapper) {
         this.restaurantRepository = restaurantRepository;
+        this.restaurantMapper = restaurantMapper;
     }
 
     @Override
@@ -58,6 +64,17 @@ public class RestaurantServiceImpl implements RestaurantService {
     public String getRestaurantTelephone(Long id) throws RestaurantNotFoundException {
         RestaurantEntity restaurantById = getRestaurantById(id);
         return restaurantById.getTelephoneNumber();
+    }
+
+    @Override
+    public RestaurantEntity getRestaurant(Long restaurantId) throws RestaurantNotFoundException {
+        return getRestaurantById(restaurantId);
+    }
+
+    @Override
+    public RestaurantEntity createRestaurant(RestaurantInDTO restaurant) throws NumberParseException {
+        RestaurantEntity restaurantEntity = restaurantMapper.restaurantInDTOToRestaurantEntity(restaurant);
+        return restaurantRepository.save(restaurantEntity);
     }
 
     @Override
