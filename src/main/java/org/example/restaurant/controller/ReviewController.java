@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 public class ReviewController {
     private final ReviewService reviewService;
@@ -18,7 +20,7 @@ public class ReviewController {
     }
 
     @PostMapping("/review")
-    public Long addReview(@RequestBody ReviewInDTO review) throws RestaurantNotFoundException {
+    public Long addReview(@Valid @RequestBody ReviewInDTO review) throws RestaurantNotFoundException {
         return reviewService.addReview(review.getRestaurantId(), review.getText(), review.getRate());
     }
 }

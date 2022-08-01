@@ -72,7 +72,11 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public RestaurantEntity createRestaurant(RestaurantInDTO restaurant) throws NumberParseException {
+    public RestaurantEntity createRestaurant(RestaurantInDTO restaurant) throws NumberParseException, FoundationDateIsExpiredException {
+        if(restaurant.getFoundationDate() == null || LocalDate.now().isBefore(restaurant.getFoundationDate())) {
+            throw new FoundationDateIsExpiredException(restaurant.getName(), restaurant.getFoundationDate());
+        }
+
         RestaurantEntity restaurantEntity = restaurantMapper.restaurantInDTOToRestaurantEntity(restaurant);
         return restaurantRepository.save(restaurantEntity);
     }

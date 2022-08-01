@@ -2,7 +2,7 @@ package org.example.restaurant.exception;
 
 import java.time.LocalDate;
 
-public class FoundationDateIsExpiredException extends Throwable {
+public class FoundationDateIsExpiredException extends Exception {
     private final String restaurantName;
     private final LocalDate foundationDate;
     public FoundationDateIsExpiredException(String name, LocalDate foundationDate) {

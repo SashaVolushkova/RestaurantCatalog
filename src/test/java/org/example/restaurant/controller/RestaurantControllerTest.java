@@ -124,4 +124,52 @@ class RestaurantControllerTest extends AppContextTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON)) // check media typeof response
                 .andExpect(content().json(afterAddReviewRestaurant)); // check response body
     }
+
+    @Test
+    public void restaurantNotFound() throws Exception {
+        this.mockMvc.perform(get("/restaurant/{restaurantId}", 9999))
+                .andDo(print()) //print response in console
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void validationTest() throws Exception {
+        ObjectMapper objectMapper = new JsonMapper();
+        RestaurantInDTO dto = RestaurantInDTO.builder()
+                .name("")
+                .foundationDate(LocalDate.now().plusDays(6))
+                .telephoneNumber("bfbfdbdf")
+                .build();
+
+        this.mockMvc.perform(post("/restaurant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andDo(print()) //print response in console
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().json("{\"name\":\"пустое имя\"," +
+                        "\"telephoneNumber\": \"телефонный номер не соответсвует формату\"}"
+                                //"\"telephoneNumber\": \"пустой телефонный номер\"}"
+                        //+ ",\"foundationDate\": \"будущее\"}"
+                ));// check status
+    }
+
+    @Test
+    public void checkFoundationDateException() throws Exception {
+        ObjectMapper objectMapper = new JsonMapper();
+        LocalDate date = LocalDate.now().plusDays(6);
+        RestaurantInDTO dto = RestaurantInDTO.builder()
+                .name("test")
+                .foundationDate(date)
+                .telephoneNumber("+7 999 999 99 99")
+                .build();
+
+        String result = "Restaurant with name \"" + "test" + "\"" +
+                "has foundation date " + date;
+        this.mockMvc.perform(post("/restaurant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andDo(print()) //print response in console
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().string(result));
+    }
 }
