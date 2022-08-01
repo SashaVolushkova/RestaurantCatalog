@@ -1,6 +1,5 @@
 package org.example.restaurant.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.assertj.core.util.Lists;
@@ -127,18 +126,50 @@ class RestaurantControllerTest extends AppContextTest {
     }
 
     @Test
+    public void restaurantNotFound() throws Exception {
+        this.mockMvc.perform(get("/restaurant/{restaurantId}", 9999))
+                .andDo(print()) //print response in console
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     public void validationTest() throws Exception {
         ObjectMapper objectMapper = new JsonMapper();
         RestaurantInDTO dto = RestaurantInDTO.builder()
                 .name("")
-                .foundationDate(LocalDate.of(2012, 12, 12))
-                .telephoneNumber("+7 (999) 999 99 99")
+                .foundationDate(LocalDate.now().plusDays(6))
+                .telephoneNumber("bfbfdbdf")
                 .build();
 
         this.mockMvc.perform(post("/restaurant")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andDo(print()) //print response in console
-                .andExpect(status().is4xxClientError());// check status
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().json("{\"name\":\"пустое имя\"," +
+                        "\"telephoneNumber\": \"телефонный номер не соответсвует формату\"}"
+                                //"\"telephoneNumber\": \"пустой телефонный номер\"}"
+                        //+ ",\"foundationDate\": \"будущее\"}"
+                ));// check status
+    }
+
+    @Test
+    public void checkFoundationDateException() throws Exception {
+        ObjectMapper objectMapper = new JsonMapper();
+        LocalDate date = LocalDate.now().plusDays(6);
+        RestaurantInDTO dto = RestaurantInDTO.builder()
+                .name("test")
+                .foundationDate(date)
+                .telephoneNumber("+7 999 999 99 99")
+                .build();
+
+        String result = "Restaurant with name \"" + "test" + "\"" +
+                "has foundation date " + date;
+        this.mockMvc.perform(post("/restaurant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andDo(print()) //print response in console
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().string(result));
     }
 }

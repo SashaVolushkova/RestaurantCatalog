@@ -19,7 +19,7 @@ public interface RestaurantService {
     String getRestaurantTelephone(Long id) throws RestaurantNotFoundException;
     String getRestaurantNameById(Long id) throws RestaurantNotFoundException;
 
-    RestaurantEntity createRestaurant(RestaurantInDTO restaurant) throws NumberParseException;
+    RestaurantEntity createRestaurant(RestaurantInDTO restaurant) throws NumberParseException, FoundationDateIsExpiredException;
 
     RestaurantEntity getRestaurant(Long restaurantId) throws RestaurantNotFoundException;
 }
