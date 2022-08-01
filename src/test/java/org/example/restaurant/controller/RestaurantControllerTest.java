@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -129,7 +130,8 @@ class RestaurantControllerTest extends AppContextTest {
     public void restaurantNotFound() throws Exception {
         this.mockMvc.perform(get("/restaurant/{restaurantId}", 9999))
                 .andDo(print()) //print response in console
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(status().reason("ресторан не найден"));
     }
 
     @Test
