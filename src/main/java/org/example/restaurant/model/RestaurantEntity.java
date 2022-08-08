@@ -21,7 +21,7 @@ public class RestaurantEntity {
     @Column(name = "telephone_number")
     private String telephoneNumber;
 
-    @OneToMany(mappedBy="restaurant", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="restaurant", fetch = FetchType.LAZY)
     private List<ReviewEntity> reviews;
 
     @Basic
