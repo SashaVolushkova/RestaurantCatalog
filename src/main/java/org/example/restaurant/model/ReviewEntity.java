@@ -10,7 +10,7 @@ public class ReviewEntity {
     @Id
     @Column(name = "id")
     private Long id;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="restaurant_id", nullable=false)
     private RestaurantEntity restaurant;
     @Basic

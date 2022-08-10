@@ -35,7 +35,6 @@ public class FoodTypeServiceImpl implements FoodTypeService {
         FoodTypeEntity foodTypeEntity = get(foodType.getId());
         foodTypeEntity.setDescription(foodType.getDescription());
         foodTypeEntity.setName(foodType.getName());
-        //foodTypeRepository.save(foodTypeEntity);
     }
 
     private FoodTypeEntity get(Long id) throws FoodTypeNotFoundException {

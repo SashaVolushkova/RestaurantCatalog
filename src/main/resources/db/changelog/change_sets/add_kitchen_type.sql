@@ -6,5 +6,4 @@ CREATE TABLE if not exists food_type (
     description varchar(200) not null
 );
 
-ALTER SEQUENCE food_type_seq
-    OWNED BY food_type.id;
+--ALTER SEQUENCE food_type_seq OWNED BY food_type.id;

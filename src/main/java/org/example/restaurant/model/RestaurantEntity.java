@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "restaurant")
@@ -21,7 +20,9 @@ public class RestaurantEntity {
     @Column(name = "telephone_number")
     private String telephoneNumber;
 
-    @OneToMany(mappedBy="restaurant", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy= "restaurant"
+            , cascade = CascadeType.PERSIST
+            , fetch = FetchType.LAZY)
     private List<ReviewEntity> reviews;
 
     @Basic
@@ -82,5 +83,9 @@ public class RestaurantEntity {
 
     public List<ReviewEntity> getReviews() {
         return reviews;
+    }
+
+    public void setReviews(List<ReviewEntity> reviews) {
+        this.reviews = reviews;
     }
 }
