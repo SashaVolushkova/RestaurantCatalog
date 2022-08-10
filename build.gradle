@@ -18,6 +18,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+//    // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-joda
+//    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-joda'
 
     // need if spring is lower
     // implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'

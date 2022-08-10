@@ -29,3 +29,9 @@ databaseChangeLog:
         changes:
           - sqlFile:
               path: \db\changelog\change_sets\add_foundation_date.sql
+    - changeSet:
+        id: 6
+        author: alexandra.volushkova
+        changes:
+          - sqlFile:
+              path: \db\changelog\change_sets\add_kitchen_type.sql

@@ -14,25 +14,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
 class RestaurantControllerTest extends AppContextTest {
     @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
     private MockMvc mockMvc;
     private RestaurantInDTO restaurantInDTO;
     private RestaurantOutDTO restaurantOutDTOWithoutReview;
-    private RestaurantOutDTO restaurantOutDTOWithReview;
-    private List<ReviewInDTO> reviewInDTOList = new ArrayList<>();
 
 
     @BeforeEach
@@ -51,20 +52,6 @@ class RestaurantControllerTest extends AppContextTest {
 
         List<ReviewOutDTO> reviews = Lists.list(review1, review2);
 
-        ReviewInDTO reviewIn1 = ReviewInDTO.builder()
-                .restaurantId(1L)
-                .rate(1)
-                .text("test_text_1")
-                .build();
-
-        ReviewInDTO reviewIn2 = ReviewInDTO.builder()
-                .restaurantId(1L)
-                .rate(3)
-                .text("test_text_2")
-                .build();
-
-        reviewInDTOList = Lists.list(reviewIn1, reviewIn2);
-
 
         restaurantInDTO = RestaurantInDTO.builder()
                 .name("test")
@@ -82,54 +69,74 @@ class RestaurantControllerTest extends AppContextTest {
         restaurantOutDTOWithoutReview = restaurantOutDTOBuilder
                 .reviews(null)
                 .build();
-        restaurantOutDTOWithReview = restaurantOutDTOBuilder
-                .reviews(reviews)
-                .build();
     }
 
     @Test
     void addRestaurant() throws Exception {
-        ObjectMapper objectMapper = new JsonMapper();
         // create expected string as json from object
         // you can read this string from file
-        String afterSaveRestaurant = objectMapper.writeValueAsString(restaurantOutDTOWithoutReview);
-        this.mockMvc.perform(post("/restaurant")
+        MvcResult mvcResult = this.mockMvc.perform(post("/restaurant")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(restaurantInDTO)))
                 .andDo(print()) //print response in console
                 .andExpect(status().isOk()) // check status
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON)) // check media typeof response
-                .andExpect(content().json(afterSaveRestaurant)); // check response body
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.name").value(restaurantOutDTOWithoutReview.getName()))
+                .andExpect(jsonPath("$.id").hasJsonPath())
+                .andExpect(jsonPath("$.foundationDate").value(restaurantOutDTOWithoutReview.getFoundationDate().format(DateTimeFormatter.ISO_DATE)))
+                .andExpect(jsonPath("$.telephoneNumber").value(restaurantOutDTOWithoutReview.getTelephoneNumber()))
+                .andReturn();
+
+        String contentAsString = mvcResult.getResponse().getContentAsString();
+        restaurantOutDTOWithoutReview = objectMapper.readValue(contentAsString, RestaurantOutDTO.class);
+
+        ReviewInDTO reviewIn1 = ReviewInDTO.builder()
+                .restaurantId(restaurantOutDTOWithoutReview.getId())
+                .rate(1)
+                .text("test_text_1")
+                .build();
+
+        ReviewInDTO reviewIn2 = ReviewInDTO.builder()
+                .restaurantId(restaurantOutDTOWithoutReview.getId())
+                .rate(3)
+                .text("test_text_2")
+                .build();
+
+
 
         this.mockMvc.perform(post("/review")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(reviewInDTOList.get(0))))
+                        .content(objectMapper.writeValueAsString(reviewIn1)))
                 .andDo(print()) //print response in console
                 .andExpect(status().isOk()) // check status
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON)) // check media typeof response
-                .andExpect(content().json("1")); // check response body
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
 
         this.mockMvc.perform(post("/review")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(reviewInDTOList.get(1))))
+                        .content(objectMapper.writeValueAsString(reviewIn2)))
                 .andDo(print()) //print response in console
                 .andExpect(status().isOk()) // check status
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON)) // check media typeof response
-                .andExpect(content().string("2")); // check response body
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-        String afterAddReviewRestaurant = objectMapper.writeValueAsString(restaurantOutDTOWithReview);
         this.mockMvc.perform(get("/restaurant/{restaurantId}", restaurantOutDTOWithoutReview.getId()))
                 .andDo(print()) //print response in console
                 .andExpect(status().isOk()) // check status
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON)) // check media typeof response
-                .andExpect(content().json(afterAddReviewRestaurant)); // check response body
+                .andExpect(jsonPath("$.id").value(restaurantOutDTOWithoutReview.getId()))
+                .andExpect(jsonPath("$.name").value(restaurantOutDTOWithoutReview.getName()))
+                .andExpect(jsonPath("$.telephoneNumber").value(restaurantOutDTOWithoutReview.getTelephoneNumber()))
+                .andExpect(jsonPath("$.foundationDate").value(restaurantOutDTOWithoutReview.getFoundationDate().format(DateTimeFormatter.ISO_DATE)))
+                .andExpect(jsonPath("$.reviews").isArray())
+                .andExpect(jsonPath("$.reviews").isNotEmpty()); // check response body
     }
 
     @Test
     public void restaurantNotFound() throws Exception {
         this.mockMvc.perform(get("/restaurant/{restaurantId}", 9999))
                 .andDo(print()) //print response in console
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(status().reason("ресторан не найден"));
     }
 
     @Test
