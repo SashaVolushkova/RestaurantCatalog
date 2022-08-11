@@ -1,5 +1,8 @@
 package org.example.restaurant.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -7,6 +10,8 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "restaurant")
+@Builder
+@AllArgsConstructor
 public class RestaurantEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
