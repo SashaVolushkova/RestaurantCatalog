@@ -35,7 +35,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public List<String> getReviewTexts(Long restaurantId) {
-        return reviewRepository.findAllByRestaurantId(restaurantId).stream()
+        return reviewRepository.findAllByRestaurant(RestaurantEntity.builder().id(restaurantId).build()).stream()
                 .map(ReviewEntity::getReviewText).collect(Collectors.toList());
     }
 }

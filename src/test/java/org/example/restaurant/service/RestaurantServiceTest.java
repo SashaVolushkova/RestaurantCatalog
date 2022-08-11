@@ -114,7 +114,7 @@ class RestaurantServiceTest extends AppContextTest {
         RestaurantEntity save = restaurantRepository.save(restaurant);
         Optional<RestaurantEntity> byId = restaurantRepository.findById(save.getId());
         assertTrue(byId.isPresent());
-        List<ReviewEntity> all = reviewRepository.findAllByRestaurantId(byId.get().getId());
+        List<ReviewEntity> all = reviewRepository.findAllByRestaurant(RestaurantEntity.builder().id(byId.get().getId()).build());
         Assertions.assertEquals(2, all.size());
     }
 
@@ -151,7 +151,7 @@ class RestaurantServiceTest extends AppContextTest {
     @Test
     @Transactional
     public void testN1() {
-        List<ReviewEntity> allByRestaurantId = reviewRepository.findAllByRestaurantId(restaurantWithReview.getId());
+        List<ReviewEntity> allByRestaurantId = reviewRepository.findAllByRestaurant(RestaurantEntity.builder().id(restaurantWithReview.getId()).build());
         for (ReviewEntity e : allByRestaurantId) {
             System.out.println(e.getRating());
             System.out.println(e.getReviewText());
