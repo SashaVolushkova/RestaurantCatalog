@@ -1,0 +1,37 @@
+databaseChangeLog:
+    - changeSet:
+        id: 1
+        author: chernishova
+        changes:
+          - sqlFile:
+             path: \db\changelog\change_sets\create_restaurant.sql
+    - changeSet:
+        id: 2
+        author: chernishova
+        changes:
+          - sqlFile:
+              path: \db\changelog\change_sets\review.sql
+    - changeSet:
+        id: 3
+        author: chernishova
+        changes:
+          - sqlFile:
+              path: \db\changelog\change_sets\insert_restaurant.sql
+    - changeSet:
+        id: 3
+        author: chernishova
+        changes:
+          - sqlFile:
+              path: \db\changelog\change_sets\insert_restaurant.sql
+    - changeSet:
+        id: 3
+        author: chernishova
+        changes:
+          - sqlFile:
+              path: \db\changelog\change_sets\insert_restaurant.sql
+    - changeSet:
+        id: 4
+        author: chernishova
+        changes:
+          - sqlFile:
+              path: \db\changelog\change_sets\insert_review.sql
