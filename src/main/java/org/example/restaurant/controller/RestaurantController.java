@@ -9,6 +9,9 @@ import org.example.restaurant.exception.RestaurantNotFoundException;
 import org.example.restaurant.mapper.RestaurantMapper;
 import org.example.restaurant.model.RestaurantEntity;
 import org.example.restaurant.service.RestaurantService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,7 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class RestaurantController {
@@ -39,6 +44,12 @@ public class RestaurantController {
     public RestaurantOutDTO getRestaurant(@PathVariable Long restaurantId) throws RestaurantNotFoundException {
         RestaurantEntity restaurantEntity = restaurantService.getRestaurant(restaurantId);
         return restaurantMapper.restaurantEntityToRestaurantOutDTO(restaurantEntity);
+    }
+
+    @GetMapping("/restaurant/all")
+    public Page<RestaurantOutDTO> getRestaurants(@PageableDefault(sort = "name") Pageable pageable) {
+        Page<RestaurantEntity> restaurants =  restaurantService.getRestaurants(pageable);
+        return restaurants.map(restaurantMapper::restaurantEntityToRestaurantOutDTO);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

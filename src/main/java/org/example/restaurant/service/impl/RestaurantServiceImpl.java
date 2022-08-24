@@ -9,6 +9,8 @@ import org.example.restaurant.model.RestaurantEntity;
 import org.example.restaurant.repository.RestaurantRepository;
 import org.example.restaurant.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -69,6 +71,11 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public RestaurantEntity getRestaurant(Long restaurantId) throws RestaurantNotFoundException {
         return getRestaurantById(restaurantId);
+    }
+
+    @Override
+    public Page<RestaurantEntity> getRestaurants(Pageable pageable) {
+        return restaurantRepository.findAll(pageable);
     }
 
     @Override

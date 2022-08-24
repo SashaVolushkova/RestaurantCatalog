@@ -15,13 +15,13 @@ import org.junit.jupiter.api.TestInstance;
 import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.mockStatic;
 
@@ -38,6 +38,53 @@ class RestaurantServiceTest extends AppContextTest {
     private ReviewRepository reviewRepository;
 
     private RestaurantEntity restaurantWithReview;
+
+    @Autowired
+    private EntityManager entityManager;
+
+
+    /**
+     * demonstration hibernate gives different object by primary after detach
+     */
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    @Test
+    @Transactional
+    void testSessionNotEquals() {
+        long restaurantByName = restaurantService.createRestaurantByName("test");
+        Optional<RestaurantEntity> byId = restaurantRepository.findById(restaurantByName);
+        RestaurantEntity restaurant = byId.get();
+        entityManager.detach(restaurant);
+        Optional<RestaurantEntity> byId2 = restaurantRepository.findById(restaurantByName);
+        RestaurantEntity restaurant2 = byId2.get();
+        assertNotEquals(restaurant, restaurant2);
+    }
+
+    /**
+     * demonstration hibernate gives different object by primary after detach
+     */
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    @Test
+    @Transactional
+    void testSessionEquals() {
+        long restaurantByName = restaurantService.createRestaurantByName("test");
+        Optional<RestaurantEntity> byId = restaurantRepository.findById(restaurantByName);
+        RestaurantEntity restaurant = byId.get();
+        Optional<RestaurantEntity> byId2 = restaurantRepository.findById(restaurantByName);
+        RestaurantEntity restaurant2 = byId2.get();
+        assertEquals(restaurant, restaurant2);
+    }
+
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    @Test
+    @Transactional // see log - no select
+    void firstLevelCache() {
+        long restaurantByName = restaurantService.createRestaurantByName("test");
+        Optional<RestaurantEntity> byId = restaurantRepository.findById(restaurantByName);
+        byId.get().setTelephoneNumber("+79999999990");
+        byId = restaurantRepository.findById(restaurantByName);
+        assertEquals("+79999999990", byId.get().getTelephoneNumber());
+    }
+
 
     @Test
     void createRestaurantByName() {
