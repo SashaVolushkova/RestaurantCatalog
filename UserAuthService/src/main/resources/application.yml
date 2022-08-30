@@ -1,9 +1,8 @@
 spring:
   rabbitmq:
-#    host: moose-01.rmq.cloudamqp.com
     username: guest
     password: guest
-#    port: 5672
+
   datasource:
     url: jdbc:postgresql://localhost:5432/user_service
     username: postgres
