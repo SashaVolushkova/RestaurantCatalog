@@ -16,7 +16,7 @@ public class TestController {
         return "admin";
     }
 
-    @PreAuthorize(value = "hasRole('ROLE_USER')")
+    //@PreAuthorize(value = "hasRole('ROLE_USER')")
     @GetMapping("/user")
     public String user() {
         return "user";
