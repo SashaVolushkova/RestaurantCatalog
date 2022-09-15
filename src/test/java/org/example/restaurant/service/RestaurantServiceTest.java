@@ -30,150 +30,14 @@ import static org.mockito.Mockito.mockStatic;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class RestaurantServiceTest extends AppContextTest {
-
-    @Autowired
-    private RestaurantService restaurantService;
-
     @Autowired
     private RestaurantRepository restaurantRepository;
-
-    @Autowired
-    private ReviewRepository reviewRepository;
-
     private RestaurantEntity restaurantWithReview;
-
-    @Autowired
-    private EntityManager entityManager;
-
-
-    /**
-     * demonstration hibernate gives different object by primary after detach
-     */
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    @Test
-    @Transactional
-    void testSessionNotEquals() {
-        long restaurantByName = restaurantService.createRestaurantByName("test");
-        Optional<RestaurantEntity> byId = restaurantRepository.findById(restaurantByName);
-        RestaurantEntity restaurant = byId.get();
-        entityManager.detach(restaurant);
-        Optional<RestaurantEntity> byId2 = restaurantRepository.findById(restaurantByName);
-        RestaurantEntity restaurant2 = byId2.get();
-        assertNotEquals(restaurant, restaurant2);
-    }
-
-    /**
-     * demonstration hibernate gives different object by primary after detach
-     */
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    @Test
-    @Transactional
-    void testSessionEquals() {
-        long restaurantByName = restaurantService.createRestaurantByName("test");
-        Optional<RestaurantEntity> byId = restaurantRepository.findById(restaurantByName);
-        RestaurantEntity restaurant = byId.get();
-        Optional<RestaurantEntity> byId2 = restaurantRepository.findById(restaurantByName);
-        RestaurantEntity restaurant2 = byId2.get();
-        assertEquals(restaurant, restaurant2);
-    }
-
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    @Test
-    @Transactional // see log - no select
-    void firstLevelCache() {
-        long restaurantByName = restaurantService.createRestaurantByName("test");
-        Optional<RestaurantEntity> byId = restaurantRepository.findById(restaurantByName);
-        byId.get().setTelephoneNumber("+79999999990");
-        byId = restaurantRepository.findById(restaurantByName);
-        assertEquals("+79999999990", byId.get().getTelephoneNumber());
-    }
-
-
-    @Test
-    void createRestaurantByName() {
-        String name = "testName";
-        long restaurantByName = restaurantService.createRestaurantByName(name);
-        assertTrue(restaurantByName > 0);
-    }
-
-    @Test
-    void getRestaurantNameById() throws RestaurantNotFoundException {
-        String name = "testName";
-        long restaurantByName = restaurantService.createRestaurantByName(name);
-        String restaurantNameById = restaurantService.getRestaurantNameById(restaurantByName);
-        assertEquals(name, restaurantNameById);
-    }
-
-    @Test
-    void getRestaurantNameByIdException() {
-        Assertions.assertThrowsExactly(RestaurantNotFoundException.class,
-                () -> restaurantService.getRestaurantNameById(333L));
-    }
-
-    @Test
-    void getTelephoneNumber() throws RestaurantNotFoundException {
-        long number = restaurantService.createRestaurantByNameAndTelephone("number", "+79999999999");
-        String restaurantTelephone = restaurantService.getRestaurantTelephone(number);
-        assertEquals("+79999999999", restaurantTelephone);
-        Assertions.assertThrows(RestaurantNotFoundException.class, () -> restaurantService.getRestaurantTelephone(444L));
-    }
-
-    @Test
-    void createRestaurantByNameAndDateExpirationDate() throws FoundationDateIsExpiredException, RestaurantNotFoundException {
-        MockedStatic<LocalDate> localDateMockedStatic = mockStatic(LocalDate.class, CALLS_REAL_METHODS);
-        LocalDate defaultNow = LocalDate.of(2014, 12, 22);
-        localDateMockedStatic.when(LocalDate::now).thenReturn(defaultNow);
-
-        Assertions.assertThrowsExactly(FoundationDateIsExpiredException.class,
-                () -> restaurantService.createRestaurantByNameAndDate("test", LocalDate.of(2015, 12, 12)),
-                "Restaurant with name \"" + "test" + "\"" +
-                        "has foundation date " + LocalDate.now().plusDays(5));
-
-        long test = restaurantService.createRestaurantByNameAndDate("test", LocalDate.of(2012, 12, 12));
-        LocalDate foundationDate = restaurantService.getFoundationDate(test);
-        assertEquals(LocalDate.of(2012, 12, 12), foundationDate);
-    }
-
-    /**
-     * demonstration cascade parameter working
-     */
-    @Test
-    @Transactional
-    public void testCascade() {
-
-        RestaurantEntity restaurant = new RestaurantEntity();
-        restaurant.setName("test");
-        restaurant.setFoundationDate(LocalDate.now().minusDays(3));
-        restaurant.setTelephoneNumber("+79999999999");
-
-        ReviewEntity review1 = new ReviewEntity();
-        review1.setReviewText("qqq");
-        review1.setRestaurant(restaurant);
-        review1.setRating(1);
-
-        ReviewEntity review2 = new ReviewEntity();
-        review2.setReviewText("qqq");
-        review2.setRestaurant(restaurant);
-        review2.setRating(1);
-
-        List<ReviewEntity> list = Lists.list(review1, review2);
-
-
-        restaurant.setReviews(list);
-
-        RestaurantEntity save = restaurantRepository.save(restaurant);
-        Optional<RestaurantEntity> byId = restaurantRepository.findById(save.getId());
-        assertTrue(byId.isPresent());
-        List<ReviewEntity> all = reviewRepository.findAllByRestaurantId(byId.get().getId());
-        Assertions.assertEquals(2, all.size());
-    }
 
     @BeforeAll
     public void beforeAll() {
         RestaurantEntity restaurant = new RestaurantEntity();
         restaurant.setName("test");
-        restaurant.setFoundationDate(LocalDate.now().minusDays(3));
-        restaurant.setTelephoneNumber("+79999999999");
 
         ReviewEntity review1 = new ReviewEntity();
         review1.setReviewText("qqq");
@@ -194,33 +58,11 @@ class RestaurantServiceTest extends AppContextTest {
         restaurant.setReviews(list);
         restaurantWithReview = restaurantRepository.save(restaurant);
     }
-
-    /**
-     * demonstrate n+1 problem. get restaurants in loop - produce n selects (but we can do it with one select).
-     */
     @Test
     @Transactional
-    public void testN1() {
-        List<ReviewEntity> allByRestaurantId = reviewRepository.findAllByRestaurantId(restaurantWithReview.getId());
-        for (ReviewEntity e : allByRestaurantId) {
-            System.out.println(e.getRating());
-            System.out.println(e.getReviewText());
-            System.out.println(e.getRestaurant().getName());
-        }
-    }
-
-    /**
-     * demonstration fetch type. see sql logs to understand difference between fetch type
-     * set fetch type in {@link RestaurantEntity} field reviews.
-     * @throws RestaurantNotFoundException if restaurant not found
-     */
-    @Test
-    @Transactional
-    public void testLazy() throws RestaurantNotFoundException {
-        RestaurantEntity restaurant = restaurantService.getRestaurant(restaurantWithReview.getId());
+    public void testGetReviews() {
+        RestaurantEntity restaurant = restaurantRepository.findById(restaurantWithReview.getId()).get();
         for (ReviewEntity e : restaurant.getReviews()) {
-            System.out.println(e.getRating());
-            System.out.println(e.getReviewText());
             System.out.println(e.getRestaurant().getName());
         }
     }
