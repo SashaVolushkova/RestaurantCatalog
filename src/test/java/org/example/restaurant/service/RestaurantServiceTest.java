@@ -58,12 +58,24 @@ class RestaurantServiceTest extends AppContextTest {
         restaurant.setReviews(list);
         restaurantWithReview = restaurantRepository.save(restaurant);
     }
+//    @Test
+//    @Transactional
+//    public void testGetReviews() {
+//        RestaurantEntity restaurant = restaurantRepository.findById(restaurantWithReview.getId()).get();
+//        for (ReviewEntity e : restaurant.getReviews()) {
+//            System.out.println(e.getRestaurant().getName());
+//        }
+//    }
+
+    @Autowired
+    private ReviewRepository reviewRepository;
     @Test
     @Transactional
     public void testGetReviews() {
-        RestaurantEntity restaurant = restaurantRepository.findById(restaurantWithReview.getId()).get();
-        for (ReviewEntity e : restaurant.getReviews()) {
+        List<ReviewEntity> reviewEntityList = reviewRepository.findAllByRestaurantId(restaurantWithReview.getId());
+        for (ReviewEntity e : reviewEntityList) {
             System.out.println(e.getRestaurant().getName());
         }
     }
+
 }
