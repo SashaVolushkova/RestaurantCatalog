@@ -4,14 +4,13 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
-
-@Entity
-@Table(name = "food_type")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "food_type")
 public class FoodTypeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FOOD_TYPE_SEQ")

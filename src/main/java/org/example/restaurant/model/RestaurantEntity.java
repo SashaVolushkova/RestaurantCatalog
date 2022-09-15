@@ -25,6 +25,9 @@ public class RestaurantEntity {
             , fetch = FetchType.LAZY)
     private List<ReviewEntity> reviews;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="food_type_id")
+    private FoodTypeEntity foodType;
     @Basic
     private LocalDate foundationDate;
 
