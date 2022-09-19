@@ -10,10 +10,7 @@ import org.example.restaurant.model.ReviewEntity;
 import org.example.restaurant.repository.FoodTypeRepository;
 import org.example.restaurant.repository.RestaurantRepository;
 import org.example.restaurant.repository.ReviewRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -112,15 +109,21 @@ class RestaurantServiceTest extends AppContextTest {
         Optional<ReviewEntity> byId2 = reviewRepository.findById(savedReview.getId());
         assertSame(byId1.get(), byId2.get());
     }
-
     @Autowired
     private FoodTypeRepository foodTypeRepository;
+    @BeforeEach
+    public void addFoodType() {
+        FoodTypeEntity foodTypeEntity = new FoodTypeEntity();
+        foodTypeEntity.setName("testGetFoodType");
+        foodTypeEntity.setDescription("test");
+        foodTypeRepository.save(foodTypeEntity);
+    }
     @Test
     @Transactional
-    public void test12() {
-        FoodTypeEntity test11_1 = foodTypeRepository.findByName("test11");
-        FoodTypeEntity test11_2 = foodTypeRepository.findByName("test11");
-        assertSame(test11_2, test11_1);
+    public void testGetFoodType() {
+        FoodTypeEntity o1 = foodTypeRepository.findByName("testGetFoodType");
+        FoodTypeEntity o2 = foodTypeRepository.findByName("testGetFoodType");
+        assertSame(o1, o2);
     }
 
     @Test
