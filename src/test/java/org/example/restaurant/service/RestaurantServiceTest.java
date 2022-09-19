@@ -2,31 +2,25 @@ package org.example.restaurant.service;
 
 import org.assertj.core.util.Lists;
 import org.example.restaurant.AppContextTest;
-import org.example.restaurant.exception.FoundationDateIsExpiredException;
-import org.example.restaurant.exception.RestaurantNotFoundException;
 import org.example.restaurant.model.FoodTypeEntity;
 import org.example.restaurant.model.RestaurantEntity;
 import org.example.restaurant.model.ReviewEntity;
 import org.example.restaurant.repository.FoodTypeRepository;
 import org.example.restaurant.repository.RestaurantRepository;
 import org.example.restaurant.repository.ReviewRepository;
-import org.junit.jupiter.api.*;
-import org.mockito.MockedStatic;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.CALLS_REAL_METHODS;
-import static org.mockito.Mockito.mockStatic;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class RestaurantServiceTest extends AppContextTest {
