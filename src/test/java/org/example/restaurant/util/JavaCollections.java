@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class JavaCollections {
@@ -15,6 +16,19 @@ public class JavaCollections {
         set.add("aaaa");
     }
 
+    @Test
+    public void test1_1() {
+        Set<Object> set = new HashSet<>();
+        set.add(5);
+        set.add("aaaa");
+    }
+
+    @Test
+    public void test1_2() {
+        Set<Object> set = new TreeSet<>();
+        set.add(5.5);
+        set.add(6.7f);
+    }
     @Test
     public void test2() {
         Set<Object> set = new TreeSet<>();
@@ -34,7 +48,7 @@ public class JavaCollections {
         map.put("a", "a");
         map.put("b", "b");
         for (Map.Entry<String, String> e : map.entrySet()) {
-            System.out.println(e.getKey() + " " + e.getValue());
+            assertEquals("a", e.getKey());
         }
     }
 

@@ -48,7 +48,7 @@ public class JavaCore {
         double a = 10.1;
         double b = a;
         a *= 10;
-        assertEquals(101.0, a);
+        assertEquals(101.0, b);
     }
 
     class A {
