@@ -116,4 +116,13 @@ public class JavaCollections {
         String s = map.get(c);
         assertSame("a", s);
     }
+
+    @Test
+    public void test9() {
+        List<Integer> integers = new ArrayList<>();
+        integers.add(1);integers.add(2);integers.add(3);
+        for (Integer integer : integers) {
+            integers.remove(1);
+        }
+    }
 }
