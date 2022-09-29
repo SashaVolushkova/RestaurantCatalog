@@ -1,7 +1,11 @@
 package org.example.restaurant;
+
+import nl.jqno.equalsverifier.EqualsVerifier;
+import org.junit.jupiter.api.Test;
+
 import java.util.Random;
-//Какие класс
-// ы содержат верную пару equals hashCode. Невалидным может быть только один из методов
+
+
 public class EqualsHashCodeTest {
     class A {
         @Override
@@ -74,5 +78,20 @@ public class EqualsHashCodeTest {
         public int hashCode() {
             return a;
         }
+    }
+
+    @Test
+    public void validate() {
+        boolean a = EqualsVerifier.simple().forClass(A.class).report().isSuccessful();
+        boolean b = EqualsVerifier.simple().forClass(B.class).report().isSuccessful();
+        boolean d = EqualsVerifier.simple().forClass(D.class).report().isSuccessful();
+        boolean e = EqualsVerifier.simple().forClass(E.class).report().isSuccessful();
+        boolean f = EqualsVerifier.simple().forClass(F.class).report().isSuccessful();
+        /*
+         * Какие классы содержат верную пару equals hashCode. Невалидным может быть только один из методов.
+         *
+         */
+        //assertTrue....
+        //assertFalse....
     }
 }
