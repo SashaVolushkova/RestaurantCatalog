@@ -1,4 +1,4 @@
-package org.example.restaurant.util;
+package org.example.restaurant;
 
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-public class JavaCollections {
+public class JavaCollectionsTest {
     @Test
     public void test1() {
         Set<Object> set = new TreeSet<>();

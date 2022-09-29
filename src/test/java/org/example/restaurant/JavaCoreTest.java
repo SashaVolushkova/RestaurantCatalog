@@ -1,11 +1,11 @@
-package org.example.restaurant.util;
+package org.example.restaurant;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-public class JavaCore {
+public class JavaCoreTest {
     @Test
     void test1() {
         String a = "aaa";

@@ -1,6 +1,8 @@
 package org.example.restaurant.model;
 
 import lombok.*;
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 
 import javax.persistence.*;
 import java.util.Objects;

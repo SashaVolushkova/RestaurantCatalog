@@ -1,4 +1,4 @@
-package org.example.restaurant.util;
+package org.example.restaurant;
 
 import org.junit.jupiter.api.Test;
 

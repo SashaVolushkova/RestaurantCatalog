@@ -1,8 +1,8 @@
-package org.example.restaurant.util;
-
+package org.example.restaurant;
 import java.util.Random;
-//Какие классы содержат верную пару equals hashCode. Невалидным может быть только один из методов
-public class EqualsHashCode {
+//Какие класс
+// ы содержат верную пару equals hashCode. Невалидным может быть только один из методов
+public class EqualsHashCodeTest {
     class A {
         @Override
         public boolean equals(Object obj) {

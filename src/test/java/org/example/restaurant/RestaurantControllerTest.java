@@ -1,9 +1,9 @@
-package org.example.restaurant.controller;
+package org.example.restaurant;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.assertj.core.util.Lists;
-import org.example.restaurant.AppContextTest;
+import org.example.restaurant.util.AppContextTest;
 import org.example.restaurant.dto.in.RestaurantInDTO;
 import org.example.restaurant.dto.in.ReviewInDTO;
 import org.example.restaurant.dto.out.RestaurantOutDTO;
