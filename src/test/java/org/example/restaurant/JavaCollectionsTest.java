@@ -5,40 +5,90 @@ import org.junit.jupiter.api.Test;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class JavaCollectionsTest {
     @Test
     public void test1() {
         Set<Object> set = new TreeSet<>();
-        set.add(5);
-        set.add("aaaa");
+        /*
+         * Какая ошибка будет инициирована? Подставьте нужное значение в переменную x
+         * Если ошибки нет, уберите assertThrowsExactly блок.
+         */
+        Class<? extends Throwable> x = Exception.class;
+        assertThrowsExactly(x, () -> {
+            set.add(5);
+            set.add("aaaa");
+        });
+        /*
+         * Опишите причину:
+         *
+         */
     }
 
     @Test
     public void test1_1() {
         Set<Object> set = new HashSet<>();
-        set.add(5);
-        set.add("aaaa");
+        /*
+         * Какая ошибка будет инициирована? Подставьте нужное значение в переменную x
+         * Если ошибки нет, уберите assertThrowsExactly блок.
+         */
+        Class<? extends Throwable> x = Exception.class;
+        assertThrowsExactly(x, () -> {
+            set.add(5);
+            set.add("aaaa");
+        });
+        /*
+         * Опишите причину:
+         *
+         */
     }
 
     @Test
     public void test1_2() {
         Set<Object> set = new TreeSet<>();
-        set.add(5.5);
-        set.add(6.7f);
+        /*
+         * Какая ошибка будет инициирована? Подставьте нужное значение в переменную x
+         * Если ошибки нет, уберите assertThrowsExactly блок.
+         */
+        Class<? extends Throwable> x = Exception.class;
+        assertThrowsExactly(x, () -> {
+            set.add(5.5);
+            set.add(6.7f);
+        });
+        /*
+         * Опишите причину:
+         *
+         */
     }
     @Test
     public void test2() {
         Set<Object> set = new TreeSet<>();
-        set.add(new ArrayList<>());
+        /*
+         * Какая ошибка будет инициирована? Подставьте нужное значение в переменную x
+         * Если ошибки нет, уберите assertThrowsExactly блок.
+         */
+        Class<? extends Throwable> x = Exception.class;
+        assertThrowsExactly(x, () -> set.add(new ArrayList<>()));
+        /*
+         * Опишите причину:
+         *
+         */
     }
 
     @Test
     public void test3() {
         Map<Object, Object> map = new TreeMap<>();
-        map.put(new ArrayList<Integer>(), "aaa");
+        /*
+         * Какая ошибка будет инициирована? Подставьте нужное значение в переменную x
+         * Если ошибки нет, уберите assertThrowsExactly блок.
+         */
+        Class<? extends Throwable> x = Exception.class;
+        assertThrowsExactly(x, () -> map.put(new ArrayList<Integer>(), "aaa"));
+        /*
+         * Опишите причину:
+         *
+         */
     }
 
     @Test
@@ -47,9 +97,7 @@ public class JavaCollectionsTest {
         map.put("c", "c");
         map.put("a", "a");
         map.put("b", "b");
-        for (Map.Entry<String, String> e : map.entrySet()) {
-            assertEquals("a", e.getKey());
-        }
+
     }
 
     @Test
@@ -58,9 +106,13 @@ public class JavaCollectionsTest {
         map.put("c", "c");
         map.put("a", "a");
         map.put("b", "b");
-        for (Map.Entry<String, String> e : map.entrySet()) {
-            System.out.println(e.getKey() + " " + e.getValue());
-        }
+        /*
+         * Какой порядок элементов будет в map.
+         * Поставьте правильное занчение в arr.
+         */
+        String[] arr = new String[]{/**/};
+        Collection<String> values = map.values();
+        assertArrayEquals(arr, values.toArray());
     }
 
     class Key {
@@ -73,18 +125,6 @@ public class JavaCollectionsTest {
         public int hashCode() {
             return 55;
         }
-    }
-
-    @Test
-    public void test6() {
-        HashMap<Key, String> map = new HashMap<>();
-        Key key = new Key();
-        map.put(key, "c");
-        for (int i = 0; i < 100; i ++) {
-            map.put(new Key(), String.valueOf(i));
-        }
-        // Какая сложность операции (в терминолигии O или о)
-        String s = map.get(key);
     }
 
     class B {
@@ -139,4 +179,7 @@ public class JavaCollectionsTest {
             integers.remove(1);
         }
     }
+
+    // TODO добавить задачу,
+    // чтоб определить правильную коллекцию выберет для решения.
 }
