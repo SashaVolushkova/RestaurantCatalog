@@ -1,9 +1,10 @@
 package org.example.restaurant;
 
+import org.example.restaurant.service.RoadMap;
+import org.example.restaurant.service.impl.RoadMapImpl;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -93,16 +94,22 @@ public class JavaCollectionsTest {
 
     @Test
     public void test4() {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new LinkedHashMap<>();
         map.put("c", "c");
         map.put("a", "a");
         map.put("b", "b");
-
+        /*
+         * Какой порядок элементов будет в map.
+         * Поставьте правильное занчение в arr.
+         */
+        String[] arr = new String[]{/**/};
+        Collection<String> values = map.values();
+        assertArrayEquals(arr, values.toArray());
     }
 
     @Test
     public void test5() {
-        Map<String, String> map = new LinkedHashMap<>();
+        Map<String, String> map = new TreeMap<>();
         map.put("c", "c");
         map.put("a", "a");
         map.put("b", "b");
@@ -118,68 +125,69 @@ public class JavaCollectionsTest {
     class Key {
         int a;
         Key() {
-            a = ThreadLocalRandom.current().nextInt();
+            a = new Random().nextInt();
         }
-
-        @Override
-        public int hashCode() {
-            return 55;
-        }
-    }
-
-    class B {
-        int b;
-        B() {b = 10;}
-    }
-    @Test
-    public void test7() {
-        B b = new B();
-        HashMap<B, String> map = new HashMap<>();
-        map.put(b, "a");
-        b.b = 100;
-        String s = map.get(b);
-        assertSame("a", s);
-    }
-
-    class C {
-        int c;
-        C() { c = 10; }
 
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            C c1 = (C) o;
+            Key key = (Key) o;
 
-            return c == c1.c;
+            return a == key.a;
         }
 
         @Override
         public int hashCode() {
-            return c;
+            return a;
         }
     }
 
     @Test
-    public void test8() {
-        C c = new C();
-        HashMap<C, String> map = new HashMap<>();
-        map.put(c, "a");
-        c.c = 100;
-        String s = map.get(c);
-        assertSame("a", s);
+    public void test6() {
+        Key key = new Key();
+        HashMap<Key, String> map = new HashMap<>();
+        map.put(key, "a");
+        key.a += 100;
+        String o = map.get(key);
+        /*
+         *  Сравните объекты o и "a".
+         */
+        //assert*****("a", o);
     }
 
     @Test
     public void test9() {
         List<Integer> integers = new ArrayList<>();
         integers.add(1);integers.add(2);integers.add(3);
-        for (Integer integer : integers) {
-            integers.remove(1);
-        }
+        /*
+         * Удалите элемент 2 с использованием итератора.
+         */
+        assertArrayEquals(new Integer[]{1,3}, integers.toArray());
     }
 
-    // TODO добавить задачу,
-    // чтоб определить правильную коллекцию выберет для решения.
+    private final RoadMap roadMap = new RoadMapImpl();
+    @Test
+    public void test10() {
+        roadMap.add("Санкт-Петербург", "Москва", 700);
+        roadMap.add("Санкт-Петербург", "Петрозавоздск", 800);
+        roadMap.add("Санкт-Петербург", "Хельсинки", 400);
+        roadMap.add("Санкт-Петербург", "Выборг", 180);
+        roadMap.add("Выборг", "Хельсинки", 100);
+
+        roadMap.add("Москва", "Тверь",  160);
+        roadMap.add("Москва", "Тула",  650);
+        roadMap.add("Тверь", "Санкт-Петербург",  650);
+        roadMap.add("Тверь", "Псков", 550);
+        roadMap.add("Волгоград", "Саратов", 830);
+
+        assertEquals(9, roadMap.roadCount());
+        assertThrows(Exception.class, () -> roadMap.add("Москва", "Санкт-Петербург", 650));
+        assertThrows(Exception.class, () -> roadMap.add("Москва", "Тверь", 650));
+        assertEquals(700, roadMap.roadLength("Москва", "Санкт-Петербург"));
+        assertEquals(710, roadMap.roadLength("Москва", "Псков"));
+        assertEquals(1100, roadMap.roadLength("Москва", "Хельсинки"));
+        assertTrue(roadMap.roadLength("Москва", "Саратов") < 0);
+    }
 }
