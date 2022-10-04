@@ -8,47 +8,80 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 public class JavaCoreTest {
     @Test
     void test1() {
-        String a = "aaa";
-        String b = "aaa" ;
-        assertSame(a, b);
+        String a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String b = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        /*
+         * Объекты a и b одинаковые? Добавьте соответвующий assert
+         */
+
+        //assertXXXXXXX(a ==  b)
+
+        /*
+         * Опишите причину:
+         *
+         */
     }
 
     @Test
     void test2() {
         String a = "aaa";
         String b = new String ("aaa") ;
-        assertSame(a, b);
+        /*
+         * Объекты a и b одинаковые? Добавьте соответвующий assert
+         */
+
+        //assertXXXXXXX(a ==  b)
+
+        /*
+         * Опишите причину:
+         *
+         */
     }
 
     @Test
     void test3() {
         String a = "AAA";
         String b = a.toLowerCase() ;
-        assertEquals("aaa", a);
+        /*
+         * Изменится ли объект a? Добавьте соответвующий assert
+         */
+
+        //assertXXXXXXXXX("aaa", a);
+
+        /*
+         * Опишите причину:
+         *
+         */
+
     }
 
     ////
     @Test
     void test4() {
-        Integer a = 5;
-        Integer b = 5;
-        assertSame(a, b);
+        Integer a = 5000;
+        Integer b = 5000;
+        /*
+         * Объекты a и b одинаковые? Добавьте соответвующий assert
+         */
+
+        //assertXXXXXXX(a ==  b)
+
+        /*
+         * Опишите причину:
+         *
+         */
     }
 
     @Test
     void test5() {
-        Integer a = 5;
-        Integer b = a;
-        b += 5;
-        assertEquals(10, a);
-    }
-
-    @Test
-    void test6() {
         double a = 10.1;
         double b = a;
         a *= 10;
-        assertEquals(101.0, b);
+        /*
+         * Изменится ли значение переменной b? Добавьте соответвующий assert
+         */
+        //assertXXXXXXX(101.0, b);
     }
 
     class A {
@@ -60,11 +93,14 @@ public class JavaCoreTest {
     }
 
     @Test
-    public void test7() {
+    public void test6() {
         A a = new A();
         a.a = 10;
         f(a);
-        assertEquals(100, a.a);
+        /*
+         * Изменится ли значение a.a? Добавьте соответвующий assert
+         */
+        //assertXXXXXXX(100, a.a);
     }
 
     private void f2(A a) {
@@ -73,42 +109,33 @@ public class JavaCoreTest {
     }
 
     @Test
-    public void test8() {
+    public void test7() {
         A a = new A();
         a.a = 10;
         f2(a);
-        assertEquals(100, a.a);
+        /*
+         * Изменится ли значение a.a? Добавьте соответвующий assert
+         */
+        //assertXXXXXXX(100, a.a);
+
     }
 
     ///
     @Test
-    public void test9() {
+    public void test8() {
         double a1 = 0;
         for (int i = 1; i <= 10; i++) {
             a1 += 0.1;
         }
         double a2 = 0.1 * 10;
-        assertEquals(a1, a2);
-    }
+        /*
+         * Одинаковое ли значение переменных a1 и a2? Добавьте соответвующий assert
+         */
+        //assertXXXXXXX(a1, a2);
 
-    @Test
-    public void test10() {
-        double a1 = 1.0;
-        double a2 = 0.9999999;
-        assertEquals(a1, a2, 0.000001d);
-    }
-
-    ////
-    private final int test11 = 10;
-    class B {
-        private int b;
-        B() {
-            b = test11 * 10;
-        }
-    }
-    @Test
-    public void test11() {
-        B b = new B();
-        assertEquals(100, b.b);
+        /*
+         * Опишите причину:
+         *
+         */
     }
 }
