@@ -1,52 +1,25 @@
 package org.example.restaurant;
 
+import org.example.restaurant.service.ArrayFiller;
+import org.example.restaurant.service.impl.ArrayFillerInTwoThreads;
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MultithreadingTest {
-    AtomicInteger i = new AtomicInteger(0);
-    class A implements Runnable {
-        @Override
-        public void run() {
-            while (i.get() < 100) {
-                System.out.println(i);
-                i.incrementAndGet();
-            }
-        }
-    }
-
     @Test
     public void test1() {
-        A a = new A();
-        Thread thread1 = new Thread(a);
-        Thread thread2 = new Thread(a);
-        thread1.start();
-        thread2.start();
+        ArrayFiller f = new ArrayFillerInTwoThreads();
+        ArrayList<Integer> integers = new ArrayList<>();
+        /*
+         * Реализуйте функцию arrayFillSortedFrom0to100
+         * Добавить числа от 0 до 100 в массив integers использую 2 потока
+         */
+        f.arrayFillSortedFrom0to100(integers);
+        for (int i = 0; i < 100; i++) {
+            assertEquals(i, integers.get(i));
+        }
     }
-
-    @Test
-    public void test2() throws InterruptedException {
-        Thread thread1 = new Thread(() -> {
-            for (int i=0; i<100; i++) {
-                if(!Thread.interrupted()) {
-                    System.out.println(i);
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        System.out.println("InterruptedException!");
-                        System.err.println("Exception msg: " + e.getMessage());
-                        return;
-                    }
-                } else {
-                    System.out.println("Interrupted!");
-                    return;
-                }
-            }
-        });
-        thread1.start();
-        Thread.sleep(1000);
-        thread1.interrupt();
-    }
-
 }
