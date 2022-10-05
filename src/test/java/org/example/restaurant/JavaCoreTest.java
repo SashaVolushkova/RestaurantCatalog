@@ -2,9 +2,6 @@ package org.example.restaurant;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-
 public class JavaCoreTest {
     @Test
     void test1() {
