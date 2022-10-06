@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 public class MultithreadingTest {
     @Test
@@ -22,4 +23,18 @@ public class MultithreadingTest {
             assertEquals(i, integers.get(i));
         }
     }
+
+    @Test
+    public void test2() {
+        /*
+         * Какая ошибка будет вызвана соответвующим кодом. Укажите правильный exception в assert
+         * Добавьте аналогичные assert с проверкой той же ошибки.
+         */
+        assertThrowsExactly(Exception.class, () -> wait(100));
+        /*
+         * Укажите причину вощникновения ошибки
+         *
+         */
+    }
+
 }
