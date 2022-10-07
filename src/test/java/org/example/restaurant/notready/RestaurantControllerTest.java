@@ -1,4 +1,4 @@
-package org.example.restaurant;
+package org.example.restaurant.notready;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
