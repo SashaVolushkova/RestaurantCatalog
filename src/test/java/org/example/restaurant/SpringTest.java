@@ -20,6 +20,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 
+@SuppressWarnings("unused")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class SpringTest extends AppContextTest {
     @Autowired
@@ -61,6 +62,7 @@ public class SpringTest extends AppContextTest {
          * Добавьте соответствующие assert
          */
 
+        fail();
         //assertXXXXXXX(a == b.getA());
         //assertXXXXX(b.getA() == c.getA());
 
@@ -117,7 +119,7 @@ public class SpringTest extends AppContextTest {
          * Будет ли сохранен test8 в методе test8?
          * Добавьте соответствующий assert
          */
-
+        fail();
         // assertXXXXXXX(byId);
     }
     @Test
@@ -133,7 +135,7 @@ public class SpringTest extends AppContextTest {
          * Будет ли сохранен test9 в методе test8?
          * Добавьте соответствующий assert
          */
-
+        fail();
         // assertXXXXXXX(byId);
     }
     @Test
@@ -157,7 +159,11 @@ public class SpringTest extends AppContextTest {
         RestaurantEntity restaurantEntity = new RestaurantEntity();
         restaurantEntity.setName("test11");
         restaurantRepository.save(restaurantEntity);
-        serviceForTest.test11("test11");
+        try {
+            serviceForTest.test11("test11");
+        } catch (Throwable e) {
+            System.out.println(e.getMessage());
+        }
         Optional<RestaurantEntity> byId = restaurantRepository.findById(restaurantEntity.getId());
         assertTrue(byId.isPresent());
         /*

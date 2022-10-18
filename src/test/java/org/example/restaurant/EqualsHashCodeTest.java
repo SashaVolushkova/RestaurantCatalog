@@ -5,9 +5,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
+@SuppressWarnings("ALL")
 public class EqualsHashCodeTest {
-    class A {
+    static class A {
         @Override
         public boolean equals(Object obj) {
             return super.equals(obj);
@@ -19,7 +22,7 @@ public class EqualsHashCodeTest {
         }
     }
 
-    class B {
+    static class B {
         @Override
         public boolean equals(Object obj) {
             return super.equals(obj);
@@ -32,7 +35,7 @@ public class EqualsHashCodeTest {
         }
     }
 
-    class D {
+    static class D {
         int a;
 
         @Override
@@ -46,7 +49,7 @@ public class EqualsHashCodeTest {
         }
     }
 
-    class E {
+    static class E {
         int a;
 
         @Override
@@ -61,7 +64,7 @@ public class EqualsHashCodeTest {
         }
     }
 
-    class F {
+    static class F {
         int a;
 
         @Override
@@ -93,5 +96,10 @@ public class EqualsHashCodeTest {
          */
         //assertTrue....
         //assertFalse....
+        assertEquals(new Object(), a);
+        assertEquals(new Object(), b);
+        assertEquals(new Object(), d);
+        assertEquals(new Object(), e);
+        assertEquals(new Object(), f);
     }
 }

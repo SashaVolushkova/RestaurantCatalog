@@ -22,5 +22,6 @@ class UtilTest {
     void reformatRuTelephoneRemoveWhiteSpaces() throws NumberParseException {
         String removeWhiteSpaces = Util.reformatRuTelephone("+7(999)222-33-11");
         assertEquals("+79992223311", removeWhiteSpaces);
+        fail();
     }
 }

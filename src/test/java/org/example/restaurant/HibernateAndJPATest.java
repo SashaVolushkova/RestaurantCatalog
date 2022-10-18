@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.vladmihalcea.sql.SQLStatementCountValidator.assertSelectCount;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.junit.jupiter.api.Assertions.*;
 
+@SuppressWarnings({"OptionalGetWithoutIsPresent", "unused"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class HibernateAndJPATest extends AppContextTest {
     @Autowired
@@ -128,10 +128,12 @@ public class HibernateAndJPATest extends AppContextTest {
 
     @BeforeEach
     public void addFoodType() {
-        FoodTypeEntity foodTypeEntity = new FoodTypeEntity();
-        foodTypeEntity.setName("testGetFoodType");
-        foodTypeEntity.setDescription("test");
-        foodTypeRepository.save(foodTypeEntity);
+        if(foodTypeRepository.findByName("testGetFoodType") == null) {
+            FoodTypeEntity foodTypeEntity = new FoodTypeEntity();
+            foodTypeEntity.setName("testGetFoodType");
+            foodTypeEntity.setDescription("test");
+            foodTypeRepository.save(foodTypeEntity);
+        }
     }
 
     @Test
@@ -165,6 +167,7 @@ public class HibernateAndJPATest extends AppContextTest {
          * Объекты byId1 и byId2 одинаковые? Добавьте соответвующий assert
          */
 
+        fail();
         //assertXXXXXXX(byId1 ==  byId2)
 
         /*
@@ -187,6 +190,7 @@ public class HibernateAndJPATest extends AppContextTest {
          * Объекты restaurant1 и restaurant2 одинаковые? Добавьте соответвующий assert
          */
 
+        fail();
         //assertXXXXXXX(byId1 ==  byId2)
 
         /*

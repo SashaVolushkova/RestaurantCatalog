@@ -1,5 +1,6 @@
 package org.example.restaurant.service.impl;
 
+import liquibase.repackaged.org.apache.commons.lang3.NotImplementedException;
 import org.example.restaurant.service.ArrayFiller;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class ArrayFillerInTwoThreads implements ArrayFiller {
      */
     @Override
     public void arrayFillSortedFrom0to100(List<Integer> list) {
+        throw new NotImplementedException();
         /*
          * Напишите вашу реализацию
          */

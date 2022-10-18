@@ -2,6 +2,9 @@ package org.example.restaurant;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
+@SuppressWarnings({"ParameterCanBeLocal", "unused", "StringOperationCanBeSimplified", "UnusedAssignment"})
 public class JavaCoreTest {
     @Test
     void test1() {
@@ -12,6 +15,7 @@ public class JavaCoreTest {
          * Объекты a и b одинаковые? Добавьте соответвующий assert
          */
 
+        fail();
         //assertXXXXXXX(a ==  b)
 
         /*
@@ -28,6 +32,7 @@ public class JavaCoreTest {
          * Объекты a и b одинаковые? Добавьте соответвующий assert
          */
 
+        fail();
         //assertXXXXXXX(a ==  b)
 
         /*
@@ -44,6 +49,7 @@ public class JavaCoreTest {
          * Изменится ли объект a? Добавьте соответвующий assert
          */
 
+        fail();
         //assertXXXXXXXXX("aaa", a);
 
         /*
@@ -62,6 +68,7 @@ public class JavaCoreTest {
          * Объекты a и b одинаковые? Добавьте соответвующий assert
          */
 
+        fail();
         //assertXXXXXXX(a ==  b)
 
         /*
@@ -78,10 +85,11 @@ public class JavaCoreTest {
         /*
          * Изменится ли значение переменной b? Добавьте соответвующий assert
          */
+        fail();
         //assertXXXXXXX(101.0, b);
     }
 
-    class A {
+    static class A {
         int a;
     }
 
@@ -97,6 +105,7 @@ public class JavaCoreTest {
         /*
          * Изменится ли значение a.a? Добавьте соответвующий assert
          */
+        fail();
         //assertXXXXXXX(100, a.a);
     }
 
@@ -113,6 +122,7 @@ public class JavaCoreTest {
         /*
          * Изменится ли значение a.a? Добавьте соответвующий assert
          */
+        fail();
         //assertXXXXXXX(100, a.a);
 
     }
@@ -128,6 +138,7 @@ public class JavaCoreTest {
         /*
          * Одинаковое ли значение переменных a1 и a2? Добавьте соответвующий assert
          */
+        fail();
         //assertXXXXXXX(a1, a2);
 
         /*

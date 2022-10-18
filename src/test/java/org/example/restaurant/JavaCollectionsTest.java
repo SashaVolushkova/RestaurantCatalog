@@ -8,6 +8,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SuppressWarnings({"MismatchedQueryAndUpdateOfCollection", "unused"})
 public class JavaCollectionsTest {
     @Test
     public void test1() {
@@ -122,7 +123,7 @@ public class JavaCollectionsTest {
         assertArrayEquals(arr, values.toArray());
     }
 
-    class Key {
+    static class Key {
         int a;
         Key() {
             a = new Random().nextInt();
@@ -154,6 +155,7 @@ public class JavaCollectionsTest {
         /*
          *  Сравните объекты o и "a".
          */
+        fail();
         //assert*****("a", o);
     }
 
