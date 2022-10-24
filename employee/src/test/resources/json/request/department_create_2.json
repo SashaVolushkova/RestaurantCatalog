@@ -1,0 +1,6 @@
+{
+  "id": 2,
+  "name": "Служба главного инженеrа",
+  "parentDepartmentId": 1,
+  "chiefId": 1
+}
