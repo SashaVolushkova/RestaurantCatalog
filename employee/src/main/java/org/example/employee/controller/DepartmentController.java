@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import org.example.employee.dto.request.DepartmentRequestDTO;
 import org.example.employee.dto.response.DepartmentResponseDTO;
 import org.example.employee.service.DepartmentService;
+import org.example.employee.validation.ValidationGroups;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
+import javax.validation.groups.Default;
 import java.util.List;
 
 @RestController
@@ -26,12 +28,14 @@ public class DepartmentController {
     }
 
     @PostMapping(produces = "application/json;charset=UTF-8")
-    public DepartmentResponseDTO createDepartment(@RequestBody DepartmentRequestDTO request) {
+    public DepartmentResponseDTO createDepartment(
+            @Validated({Default.class, ValidationGroups.CreateInfo.class}) @RequestBody DepartmentRequestDTO request) {
         return departmentService.createDepartment(request);
     }
 
     @PutMapping(produces = "application/json;charset=UTF-8")
-    public DepartmentResponseDTO updateDepartment(@RequestBody DepartmentRequestDTO requestDTO) {
+    public DepartmentResponseDTO updateDepartment(
+            @Validated({Default.class, ValidationGroups.UpdateInfo.class}) @RequestBody DepartmentRequestDTO requestDTO) {
         return departmentService.updateDepartment(requestDTO);
     }
 

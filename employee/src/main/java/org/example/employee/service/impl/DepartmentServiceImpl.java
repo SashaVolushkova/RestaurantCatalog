@@ -3,13 +3,10 @@ package org.example.employee.service.impl;
 import lombok.AllArgsConstructor;
 import org.example.employee.dto.request.DepartmentRequestDTO;
 import org.example.employee.dto.response.DepartmentResponseDTO;
-import org.example.employee.error.MultiValidationException;
 import org.example.employee.error.NotFoundRecordException;
-import org.example.employee.error.ValidationException;
 import org.example.employee.mapper.DepartmentMapper;
 import org.example.employee.repository.DepartmentRepository;
 import org.example.employee.service.DepartmentService;
-import org.example.employee.validation.ValidationUtils;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -44,9 +41,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     @Transactional
     public DepartmentResponseDTO createDepartment(DepartmentRequestDTO request) {
-        List<ValidationException> validationExceptions = ValidationUtils.validateCreate(request);
-        if (!validationExceptions.isEmpty()) throw new MultiValidationException(validationExceptions);
-
         return Optional.of(request)
                 .map(mapper::toEntity)
                 .map(departmentRepository::save)
@@ -57,9 +51,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     @Transactional
     public DepartmentResponseDTO updateDepartment(DepartmentRequestDTO request) {
-        List<ValidationException> validationExceptions = ValidationUtils.validateUpdate(request);
-        if (!validationExceptions.isEmpty()) throw new MultiValidationException(validationExceptions);
-
         return Optional.of(request)
                 .map(mapper::toEntity)
                 .map(departmentRepository::save)
