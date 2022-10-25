@@ -1,0 +1,20 @@
+[
+  {
+    "id": 2,
+    "name": "Бубликов Андрей Сергеевич",
+    "email": "bublikov@mail.com",
+    "department": {
+      "id": 1
+    },
+    "salary": 100000.75
+  },
+  {
+    "id": 3,
+    "name": "Сергиенко Владимир Павлович",
+    "email": "sergienko@mail.com",
+    "department": {
+      "id": 2
+    },
+    "salary": 150000.15
+  }
+]
