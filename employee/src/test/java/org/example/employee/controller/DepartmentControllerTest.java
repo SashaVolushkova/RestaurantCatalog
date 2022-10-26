@@ -2,10 +2,7 @@ package org.example.employee.controller;
 
 import org.example.employee.dto.request.DepartmentRequestDTO;
 import org.example.employee.dto.response.DepartmentResponseDTO;
-import org.example.employee.error.ErrorCode;
-import org.example.employee.error.MultiValidationException;
 import org.example.employee.error.NotFoundRecordException;
-import org.example.employee.error.ValidationException;
 import org.example.employee.service.DepartmentService;
 import org.example.employee.util.TestUtil;
 import org.junit.jupiter.api.Assertions;
@@ -15,9 +12,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Locale;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -29,18 +28,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(DepartmentController.class)
 public class DepartmentControllerTest {
 
+    private static final Locale LOCALE_RU = new Locale("ru", "RU");
+
     private static final String BASE_REQUEST = "json/request/";
     private static final String BASE_RESPONSE = "json/response/";
 
-    private static final String REQUEST_CREATE_1 = BASE_REQUEST + "department_create_1.json";
-    private static final String REQUEST_CREATE_2 = BASE_REQUEST + "department_create_2.json";
-    private static final String REQUEST_UPDATE_1 = BASE_REQUEST + "department_update_1.json";
-    private static final String REQUEST_UPDATE_2 = BASE_REQUEST + "department_update_2.json";
+    private static final String REQUEST_CREATE_SUCCESS = BASE_REQUEST + "department_create_success.json";
+    private static final String REQUEST_CREATE_EXCEPTION = BASE_REQUEST + "department_create_exception.json";
+    private static final String REQUEST_UPDATE_SUCCESS = BASE_REQUEST + "department_update_success.json";
+    private static final String REQUEST_UPDATE_EXCEPTION = BASE_REQUEST + "department_update_exception.json";
 
-    private static final String RESPONSE_GET_1 = BASE_RESPONSE + "department_get_1.json";
-    private static final String RESPONSE_GET_2 = BASE_RESPONSE + "department_get_2.json";
-    private static final String RESPONSE_CREATE_1 = BASE_RESPONSE + "department_create_1.json";
-    private static final String RESPONSE_UPDATE_1 = BASE_RESPONSE + "department_update_1.json";
+    private static final String RESPONSE_GET_ID = BASE_RESPONSE + "department_get_id.json";
+    private static final String RESPONSE_GET_ALL = BASE_RESPONSE + "departments_get_all.json";
+    private static final String RESPONSE_CREATE_SUCCESS = BASE_RESPONSE + "department_create_success.json";
+    private static final String RESPONSE_UPDATE_SUCCESS = BASE_RESPONSE + "department_update_success.json";
 
     @MockBean
     private DepartmentService departmentService;
@@ -50,7 +51,7 @@ public class DepartmentControllerTest {
     @Test
     void getDepartmentsTest() throws Exception {
         final List<DepartmentResponseDTO> response =
-                TestUtil.readJsonResourceToList(RESPONSE_GET_2, DepartmentResponseDTO.class);
+                TestUtil.readJsonResourceToList(RESPONSE_GET_ALL, DepartmentResponseDTO.class);
         final String expected = TestUtil.write(response);
 
         doReturn(response)
@@ -68,7 +69,7 @@ public class DepartmentControllerTest {
     @Test
     void getDepartmentByIdSuccessTest() throws Exception {
         final DepartmentResponseDTO response =
-                TestUtil.readJsonResource(RESPONSE_GET_1, DepartmentResponseDTO.class);
+                TestUtil.readJsonResource(RESPONSE_GET_ID, DepartmentResponseDTO.class);
         final String expected = TestUtil.write(response);
 
         doReturn(response)
@@ -84,7 +85,7 @@ public class DepartmentControllerTest {
 
     @Test
     void getDepartmentByIdExceptionTest() throws Exception {
-        final String expected = "В таблице: department не найнеда запись с идентификатором: 3";
+        final String expected = "В таблице: department не найдена запись с идентификатором: 3";
         doThrow(new NotFoundRecordException(new Object[]{"department", "3"}))
                 .when(departmentService)
                 .getDepartmentById(eq(3L));
@@ -107,7 +108,7 @@ public class DepartmentControllerTest {
 
     @Test
     void deleteDepartmentExceptionTest() throws Exception {
-        final String expected = "В таблице: department не найнеда запись с идентификатором: 3";
+        final String expected = "В таблице: department не найдена запись с идентификатором: 3";
         doThrow(new NotFoundRecordException(new Object[]{"department", "3"}))
                 .when(departmentService)
                 .deleteDepartment(eq(3L));
@@ -123,10 +124,10 @@ public class DepartmentControllerTest {
     @Test
     void createDepartmentSuccessTest() throws Exception {
         final DepartmentRequestDTO request =
-                TestUtil.readJsonResource(REQUEST_CREATE_1, DepartmentRequestDTO.class);
+                TestUtil.readJsonResource(REQUEST_CREATE_SUCCESS, DepartmentRequestDTO.class);
         final DepartmentResponseDTO response =
-                TestUtil.readJsonResource(RESPONSE_CREATE_1, DepartmentResponseDTO.class);
-        final byte[] requestBytes = TestUtil.readResource(REQUEST_CREATE_1).readAllBytes();
+                TestUtil.readJsonResource(RESPONSE_CREATE_SUCCESS, DepartmentResponseDTO.class);
+        final byte[] requestBytes = TestUtil.readResource(REQUEST_CREATE_SUCCESS).readAllBytes();
         final String expected = TestUtil.write(response);
         doReturn(response)
                 .when(departmentService)
@@ -145,39 +146,29 @@ public class DepartmentControllerTest {
 
     @Test
     void createDepartmentExceptionTest() throws Exception {
-        final DepartmentRequestDTO request =
-                TestUtil.readJsonResource(REQUEST_CREATE_2, DepartmentRequestDTO.class);
         final byte[] requestBytes =
-                TestUtil.readResource(REQUEST_CREATE_2).readAllBytes();
-        final String expected = "В представлении лишний атрибут: id;\n" +
-                "Неверный формат атрибута: name";
-        doThrow(new MultiValidationException(List.of(
-                        new ValidationException(ErrorCode.NOT_NULL_ATTRIBUTE, new Object[]{"id"}),
-                        new ValidationException(ErrorCode.INVALID_ATTRIBUTE_FORM, new Object[]{"name"})
-                )
-                )
-        )
-                .when(departmentService)
-                .createDepartment(eq(request));
+                TestUtil.readResource(REQUEST_CREATE_EXCEPTION).readAllBytes();
+        final String json = "{\"id\":\"должно равняться null\",\"name\":\"должно соответствовать \\\"^[а-яА-ЯёЁ ]+\\\"\"}";
 
         this.mockMvc
                 .perform(post("/departmens")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBytes)
+                        .locale(LOCALE_RU)
                 )
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof MultiValidationException))
-                .andExpect(content().string(expected));
+                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException))
+                .andExpect(content().json(json));
     }
 
     @Test
     void updateDepartmentSuccessTest() throws Exception {
         final DepartmentRequestDTO request =
-                TestUtil.readJsonResource(REQUEST_UPDATE_1, DepartmentRequestDTO.class);
+                TestUtil.readJsonResource(REQUEST_UPDATE_SUCCESS, DepartmentRequestDTO.class);
         final DepartmentResponseDTO response =
-                TestUtil.readJsonResource(RESPONSE_UPDATE_1, DepartmentResponseDTO.class);
-        final byte[] requestBytes = TestUtil.readResource(REQUEST_UPDATE_1).readAllBytes();
+                TestUtil.readJsonResource(RESPONSE_UPDATE_SUCCESS, DepartmentResponseDTO.class);
+        final byte[] requestBytes = TestUtil.readResource(REQUEST_UPDATE_SUCCESS).readAllBytes();
         final String expected = TestUtil.write(response);
         doReturn(response)
                 .when(departmentService)
@@ -196,28 +187,20 @@ public class DepartmentControllerTest {
 
     @Test
     void updateDepartmentExceptionTest() throws Exception {
-        final DepartmentRequestDTO request =
-                TestUtil.readJsonResource(REQUEST_UPDATE_2, DepartmentRequestDTO.class);
         final byte[] requestBytes =
-                TestUtil.readResource(REQUEST_UPDATE_2).readAllBytes();
-        final String expected = "Отсутствует обязательный атрибут: id";
-        doThrow(new MultiValidationException(List.of(
-                        new ValidationException(ErrorCode.MISSING_REQUIRED_ATTRIBUTE, new Object[]{"id"})
-                )
-                )
-        )
-                .when(departmentService)
-                .updateDepartment(eq(request));
+                TestUtil.readResource(REQUEST_UPDATE_EXCEPTION).readAllBytes();
+        final String json = "{\"id\":\"не должно равняться null\"}";
 
         this.mockMvc
                 .perform(put("/departmens")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBytes)
+                        .locale(LOCALE_RU)
                 )
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof MultiValidationException))
-                .andExpect(content().string(expected));
+                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException))
+                .andExpect(content().json(json));
     }
 
 }

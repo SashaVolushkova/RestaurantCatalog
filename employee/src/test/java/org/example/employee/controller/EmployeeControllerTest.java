@@ -2,10 +2,7 @@ package org.example.employee.controller;
 
 import org.example.employee.dto.request.EmployeeRequestDTO;
 import org.example.employee.dto.response.EmployeeResponseDTO;
-import org.example.employee.error.ErrorCode;
-import org.example.employee.error.MultiValidationException;
 import org.example.employee.error.NotFoundRecordException;
-import org.example.employee.error.ValidationException;
 import org.example.employee.service.EmployeeService;
 import org.example.employee.util.TestUtil;
 import org.junit.jupiter.api.Assertions;
@@ -15,9 +12,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Locale;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -30,18 +29,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(EmployeeController.class)
 public class EmployeeControllerTest {
 
+    private static final Locale LOCALE_RU = new Locale("ru", "RU");
+
     private static final String BASE_REQUEST = "json/request/";
     private static final String BASE_RESPONSE = "json/response/";
 
-    private static final String REQUEST_CREATE_1 = BASE_REQUEST + "employee_create_1.json";
-    private static final String REQUEST_CREATE_2 = BASE_REQUEST + "employee_create_2.json";
-    private static final String REQUEST_UPDATE_1 = BASE_REQUEST + "employee_update_1.json";
-    private static final String REQUEST_UPDATE_2 = BASE_REQUEST + "employee_update_2.json";
+    private static final String REQUEST_CREATE_SUCCESS = BASE_REQUEST + "employee_create_success.json";
+    private static final String REQUEST_CREATE_EXCEPTION = BASE_REQUEST + "employee_create_exception.json";
+    private static final String REQUEST_UPDATE_SUCCESS = BASE_REQUEST + "employee_update_success.json";
+    private static final String REQUEST_UPDATE_EXCEPTION = BASE_REQUEST + "employee_update_exception.json";
 
-    private static final String RESPONSE_GET_1 = BASE_RESPONSE + "employee_get_1.json";
-    private static final String RESPONSE_GET_2 = BASE_RESPONSE + "employee_get_2.json";
-    private static final String RESPONSE_CREATE_1 = BASE_RESPONSE + "employee_create_1.json";
-    private static final String RESPONSE_UPDATE_1 = BASE_RESPONSE + "employee_update_1.json";
+    private static final String RESPONSE_GET_ID = BASE_RESPONSE + "employee_get_id.json";
+    private static final String RESPONSE_GET_ALL = BASE_RESPONSE + "employees_get_all.json";
+    private static final String RESPONSE_CREATE_SUCCESS = BASE_RESPONSE + "employee_create_success.json";
+    private static final String RESPONSE_UPDATE_SUCCESS = BASE_RESPONSE + "employee_update_success.json";
 
     @MockBean
     private EmployeeService employeeService;
@@ -51,7 +52,7 @@ public class EmployeeControllerTest {
     @Test
     void getEmployeeByIdSuccessTest() throws Exception {
         final EmployeeResponseDTO response =
-                TestUtil.readJsonResource(RESPONSE_GET_1, EmployeeResponseDTO.class);
+                TestUtil.readJsonResource(RESPONSE_GET_ID, EmployeeResponseDTO.class);
         final String expected = TestUtil.write(response);
 
         doReturn(response)
@@ -68,7 +69,7 @@ public class EmployeeControllerTest {
 
     @Test
     void getEmployeeByIdExceptionTest() throws Exception {
-        final String expected = "В таблице: employee не найнеда запись с идентификатором: 3";
+        final String expected = "В таблице: employee не найдена запись с идентификатором: 3";
         doThrow(new NotFoundRecordException(new Object[]{"employee", "3"}))
                 .when(employeeService)
                 .getEmployeeById(3L);
@@ -84,7 +85,7 @@ public class EmployeeControllerTest {
     @Test
     void getEmployeesTest() throws Exception {
         final List<EmployeeResponseDTO> response =
-                TestUtil.readJsonResourceToList(RESPONSE_GET_2, EmployeeResponseDTO.class);
+                TestUtil.readJsonResourceToList(RESPONSE_GET_ALL, EmployeeResponseDTO.class);
         final String expected = TestUtil.write(response);
 
         doReturn(response)
@@ -109,10 +110,10 @@ public class EmployeeControllerTest {
 
     @Test
     void deleteEmployeeExceptionTest() throws Exception {
-        final String expected = "В таблице: employee не найнеда запись с идентификатором: 3";
+        final String expected = "В таблице: employee не найдена запись с идентификатором: 3";
         doThrow(new NotFoundRecordException(new Object[]{"employee", "3"}))
                 .when(employeeService)
-                .deleteEmployee(3l);
+                .deleteEmployee(3L);
 
         this.mockMvc
                 .perform(delete("/employees/{id}", 3L))
@@ -125,10 +126,10 @@ public class EmployeeControllerTest {
     @Test
     void createEmployeeSuccessTest() throws Exception {
         final EmployeeRequestDTO request =
-                TestUtil.readJsonResource(REQUEST_CREATE_1, EmployeeRequestDTO.class);
+                TestUtil.readJsonResource(REQUEST_CREATE_SUCCESS, EmployeeRequestDTO.class);
         final EmployeeResponseDTO response =
-                TestUtil.readJsonResource(RESPONSE_CREATE_1, EmployeeResponseDTO.class);
-        final byte[] requestBytes = TestUtil.readResource(REQUEST_CREATE_1).readAllBytes();
+                TestUtil.readJsonResource(RESPONSE_CREATE_SUCCESS, EmployeeResponseDTO.class);
+        final byte[] requestBytes = TestUtil.readResource(REQUEST_CREATE_SUCCESS).readAllBytes();
         final String expected = TestUtil.write(response);
         doReturn(response)
                 .when(employeeService)
@@ -147,43 +148,32 @@ public class EmployeeControllerTest {
 
     @Test
     void createEmployeeExceptionTest() throws Exception {
-        final EmployeeRequestDTO request =
-                TestUtil.readJsonResource(REQUEST_CREATE_2, EmployeeRequestDTO.class);
         final byte[] requestBytes =
-                TestUtil.readResource(REQUEST_CREATE_2).readAllBytes();
-        final String expected = "В представлении лишний атрибут: id;\n" +
-                "Неверный формат атрибута: name;\n" +
-                "Неверный формат атрибута: email;\n" +
-                "Отсутствует обязательный атрибут: departmentId";
-        doThrow(new MultiValidationException(List.of(
-                        new ValidationException(ErrorCode.NOT_NULL_ATTRIBUTE, new Object[]{"id"}),
-                        new ValidationException(ErrorCode.INVALID_ATTRIBUTE_FORM, new Object[]{"name"}),
-                        new ValidationException(ErrorCode.INVALID_ATTRIBUTE_FORM, new Object[]{"email"}),
-                        new ValidationException(ErrorCode.MISSING_REQUIRED_ATTRIBUTE, new Object[]{"departmentId"})
-                )
-                )
-        )
-                .when(employeeService)
-                .createEmployee(eq(request));
+                TestUtil.readResource(REQUEST_CREATE_EXCEPTION).readAllBytes();
+        final String json = "{\"name\":\"должно соответствовать \\\"^[а-яА-ЯёЁ ]+\\\"\"," +
+                "\"id\":\"должно равняться null\"," +
+                "\"departmentId\":\"не должно равняться null\"," +
+                "\"email\":\"должно иметь формат адреса электронной почты\"}";
 
         this.mockMvc
                 .perform(post("/employees")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBytes)
+                        .locale(LOCALE_RU)
                 )
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof MultiValidationException))
-                .andExpect(content().string(expected));
+                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException))
+                .andExpect(content().json(json));
     }
 
     @Test
     void updateEmployeeSuccessTest() throws Exception {
         final EmployeeRequestDTO request =
-                TestUtil.readJsonResource(REQUEST_UPDATE_1, EmployeeRequestDTO.class);
+                TestUtil.readJsonResource(REQUEST_UPDATE_SUCCESS, EmployeeRequestDTO.class);
         final EmployeeResponseDTO response =
-                TestUtil.readJsonResource(RESPONSE_UPDATE_1, EmployeeResponseDTO.class);
-        final byte[] requestBytes = TestUtil.readResource(REQUEST_UPDATE_1).readAllBytes();
+                TestUtil.readJsonResource(RESPONSE_UPDATE_SUCCESS, EmployeeResponseDTO.class);
+        final byte[] requestBytes = TestUtil.readResource(REQUEST_UPDATE_SUCCESS).readAllBytes();
         final String expected = TestUtil.write(response);
         doReturn(response)
                 .when(employeeService)
@@ -202,29 +192,21 @@ public class EmployeeControllerTest {
 
     @Test
     void updateEmployeeExceptionTest() throws Exception {
-        final EmployeeRequestDTO request =
-                TestUtil.readJsonResource(REQUEST_UPDATE_2, EmployeeRequestDTO.class);
         final byte[] requestBytes =
-                TestUtil.readResource(REQUEST_UPDATE_2).readAllBytes();
-        final String expected = "Отсутствует обязательный атрибут: id;\n" +
-                "Отсутствует обязательный атрибут: salary";
-        doThrow(new MultiValidationException(List.of(
-                        new ValidationException(ErrorCode.MISSING_REQUIRED_ATTRIBUTE, new Object[]{"id"}),
-                        new ValidationException(ErrorCode.MISSING_REQUIRED_ATTRIBUTE, new Object[]{"salary"})
-                )
-                )
-        )
-                .when(employeeService)
-                .updateEmployee(eq(request));
+                TestUtil.readResource(REQUEST_UPDATE_EXCEPTION).readAllBytes();
+        final String expected = "{\"id\":\"не должно равняться null\"," +
+                "\"email\":\"должно иметь формат адреса электронной почты\"," +
+                "\"salary\":\"не должно равняться null\"}";
 
         this.mockMvc
                 .perform(put("/employees")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBytes)
+                        .locale(LOCALE_RU)
                 )
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof MultiValidationException))
-                .andExpect(content().string(expected));
+                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException))
+                .andExpect(content().json(expected));
     }
 }

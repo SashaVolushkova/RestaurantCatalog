@@ -4,8 +4,11 @@ import lombok.AllArgsConstructor;
 import org.example.employee.dto.request.EmployeeRequestDTO;
 import org.example.employee.dto.response.EmployeeResponseDTO;
 import org.example.employee.service.EmployeeService;
+import org.example.employee.validation.ValidationGroups;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.groups.Default;
 import java.util.List;
 
 @RestController
@@ -26,12 +29,14 @@ public class EmployeeController {
     }
 
     @PostMapping(produces = "application/json;charset=UTF-8")
-    public EmployeeResponseDTO createEmployee(@RequestBody EmployeeRequestDTO request) {
+    public EmployeeResponseDTO createEmployee(
+            @Validated({Default.class,ValidationGroups.CreateInfo.class}) @RequestBody EmployeeRequestDTO request) {
         return employeeService.createEmployee(request);
     }
 
     @PutMapping(produces = "application/json;charset=UTF-8")
-    public EmployeeResponseDTO updateEmployee(@RequestBody EmployeeRequestDTO request) {
+    public EmployeeResponseDTO updateEmployee(
+            @Validated({Default.class, ValidationGroups.UpdateInfo.class}) @RequestBody EmployeeRequestDTO request) {
         return employeeService.updateEmployee(request);
     }
 

@@ -1,8 +1,8 @@
 package org.example.employee.error;
 
-public class NotFoundRecordException extends ValidationException{
+public class NotFoundRecordException extends RuntimeException{
 
     public NotFoundRecordException(Object[] args) {
-        super(ErrorCode.NOT_FOUND_RECORD, args);
+        super(String.format(ErrorCode.NOT_FOUND_RECORD.getErrorDescription(), args));
     }
 }
