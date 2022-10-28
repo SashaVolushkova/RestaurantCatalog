@@ -8,4 +8,6 @@ spring:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
+  liquibase:
+    change-log: classpath:db/changelog/master.xml
