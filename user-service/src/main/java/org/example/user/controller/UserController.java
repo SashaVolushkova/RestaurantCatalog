@@ -7,6 +7,9 @@ import org.example.user.dto.response.UserResponseDTO;
 import org.example.user.mapper.UserMapper;
 import org.example.user.model.User;
 import org.example.user.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -28,9 +31,9 @@ public class UserController {
     }
 
     @GetMapping
-    public Set<UserResponseDTO> getUsers() {
-        Set<User> users = service.getUsers();
-        return users.stream().map(mapper::toDTO).collect(Collectors.toSet());
+    public Page<UserResponseDTO> getUsers(@PageableDefault(sort = "nickname") Pageable pageable) {
+        Page<User> users = service.getUsers(pageable);
+        return users.map(mapper::toDTO);
     }
 
     @PostMapping
