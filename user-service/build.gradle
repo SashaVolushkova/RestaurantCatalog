@@ -1,0 +1,46 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.4'
+    id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+sourceCompatibility = '17'
+targetCompatibility = JavaVersion.VERSION_17
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+ext {
+    mapstructVersion = "1.5.3.Final"
+    lombokVersion = "1.18.24"
+    lombokMapstructBindingVersion = "0.2.0"
+}
+
+dependencies {
+    //spring
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'junit:junit:4.13.1'
+    //db
+    runtimeOnly 'com.h2database:h2'
+    implementation 'org.liquibase:liquibase-core'
+    //junit
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    //lombok + mapstruct
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    implementation "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+}
+
+test {
+    useJUnitPlatform()
+}
