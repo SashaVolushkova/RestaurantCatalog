@@ -52,4 +52,15 @@
                                  constraintName="fk_department_chief_id_employee_id"
                                  referencedTableName="employee" referencedColumnNames="id"/>
     </changeSet>
+
+    <changeSet id="add_sequence" author="alexandra.volushkova">
+        <sql>
+            create sequence "EMPLOYEE_SEQUENCE" start with 1;
+            alter table employee alter column id set default nextval('EMPLOYEE_SEQUENCE');
+        </sql>
+        <sql>
+            create sequence "DEP_SEQUENCE" start with 1;
+            alter table department alter column id set default nextval('DEP_SEQUENCE');
+        </sql>
+    </changeSet>
 </databaseChangeLog>

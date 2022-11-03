@@ -13,6 +13,8 @@ insert into department(id, name, parent_department_id) values (8, 'Планов�
 insert into department(id, name, parent_department_id) values (9, 'Отдел радио систем', 4);
 insert into department(id, name, parent_department_id) values (10, 'Отдел теле систем', 4);
 
+ALTER SEQUENCE DEP_SEQUENCE RESTART WITH 11;
+
 insert into employee(id, name, email, department_id, salary) values (1, 'Говоров Сергей Владимирович', 'govor@mail.com', 1, '500000.00');
 insert into employee(id, name, email, department_id, salary) values (2, 'Нечаев Олег Андреевич', 'nechaev@mail.com', 2, '400000.00');
 insert into employee(id, name, email, department_id, salary) values (3, 'Вострикова Юлия Сергеевна', 'vostrik@mail.com', 3, '400000.00');
@@ -35,4 +37,4 @@ update department set chief_id = 8 where id = 8;
 update department set chief_id = 9 where id = 9;
 update department set chief_id = 10 where id = 10;
 
-ALTER SEQUENCE EMPLOYEE_SEQUENCE RESTART WITH 11
+ALTER SEQUENCE EMPLOYEE_SEQUENCE RESTART WITH 11;

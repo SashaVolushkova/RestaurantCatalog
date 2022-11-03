@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id "jacoco"
 }
 
 group 'org.example'
@@ -56,3 +57,9 @@ test {
     useJUnitPlatform()
 }
 targetCompatibility = JavaVersion.VERSION_17
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
