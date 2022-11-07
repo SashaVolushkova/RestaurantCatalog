@@ -21,4 +21,8 @@ public interface DepartmentRepository extends JpaRepository<DepartmentEntity, Lo
     @Modifying
     @Query("update DepartmentEntity set parentDepartment = null where parentDepartment.id = :parentId")
     void removeParent(Long parentId);
+
+    @Modifying
+    @Query("update DepartmentEntity set chief = null where chief.id = :chiefId")
+    void removeChief(Long chiefId);
 }
