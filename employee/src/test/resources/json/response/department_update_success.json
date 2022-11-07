@@ -1,11 +1,10 @@
 {
   "id": 2,
   "name": "Служба главного инженера",
-  "parentDepartment": {
-    "id": 1,
-    "name": "Головной отдел"
-  },
+  "parentId": 1,
   "chief": {
-    "id": 2
+    "id":2,
+    "name":"Нечаев Олег Андреевич",
+    "email":"nechaev@mail.com"
   }
 }

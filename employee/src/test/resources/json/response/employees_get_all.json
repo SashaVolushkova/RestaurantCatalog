@@ -1,20 +1,16 @@
 [
   {
-    "id": 2,
-    "name": "Бубликов Андрей Сергеевич",
-    "email": "bublikov@mail.com",
-    "department": {
-      "id": 1
-    },
-    "salary": 100000.75
+    "id": 1,
+    "name": "Говоров Сергей Владимирович",
+    "email": "govor@mail.com",
+    "departmentId": 1,
+    "salary": 500000
   },
   {
-    "id": 3,
-    "name": "Сергиенко Владимир Павлович",
-    "email": "sergienko@mail.com",
-    "department": {
-      "id": 2
-    },
-    "salary": 150000.15
+    "id": 2,
+    "name": "Нечаев Олег Андреевич",
+    "email": "nechaev@mail.com",
+    "departmentId": 2,
+    "salary": 400000
   }
 ]

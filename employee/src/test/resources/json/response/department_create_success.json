@@ -1,11 +1,8 @@
 {
-  "id": 2,
+  "id": "##IGNORE##",
   "name": "Служба главного инженера",
-  "parentDepartment": {
-    "id": 1,
-    "name": "Головной отдел"
-  },
+  "parentId": 1,
   "chief": {
-    "id": 2
+    "id": 1
   }
 }
