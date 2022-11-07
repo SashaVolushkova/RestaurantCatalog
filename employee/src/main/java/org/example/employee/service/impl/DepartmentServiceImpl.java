@@ -5,8 +5,10 @@ import org.example.employee.dto.request.DepartmentRequestDTO;
 import org.example.employee.dto.response.DepartmentResponseDTO;
 import org.example.employee.error.NotFoundRecordException;
 import org.example.employee.mapper.DepartmentMapper;
+import org.example.employee.model.DepartmentEntity;
 import org.example.employee.repository.DepartmentRepository;
 import org.example.employee.service.DepartmentService;
+import org.example.employee.service.EmployeeService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -41,11 +43,26 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     @Transactional
     public DepartmentResponseDTO createDepartment(DepartmentRequestDTO request) {
-        return Optional.of(request)
-                .map(mapper::toEntity)
-                .map(departmentRepository::save)
+
+        DepartmentEntity parent = getParentDepFromRequest(request);
+
+        DepartmentEntity departmentEntity = mapper.toEntity(request);
+        departmentEntity.setParentDepartment(parent);
+        return Optional.of(departmentRepository.save(departmentEntity))
                 .map(mapper::toDTO)
                 .orElse(null);
+    }
+
+    private DepartmentEntity getParentDepFromRequest(DepartmentRequestDTO request) {
+        if (request.getParentDepartmentId() != null) {
+
+            Optional<DepartmentEntity> parentOp = departmentRepository.findById(request.getParentDepartmentId());
+            if (parentOp.isEmpty()) {
+                throw new NotFoundRecordException(new Object[]{DEPARTMENT_TABLE, request.getParentDepartmentId().toString()});
+            }
+            return parentOp.get();
+        }
+        return null;
     }
 
     @Override
@@ -61,8 +78,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     @Transactional
     public void deleteDepartment(Long id) {
+
         departmentRepository.findById(id)
-                .ifPresentOrElse(departmentRepository::delete,
+                .ifPresentOrElse(d -> {
+                            departmentRepository.removeParent(d.getId());
+                            departmentRepository.delete(d);
+                        },
                         () -> {
                             throw new NotFoundRecordException(new Object[]{DEPARTMENT_TABLE, id.toString()});
                         });

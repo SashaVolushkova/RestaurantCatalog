@@ -11,4 +11,4 @@ spring:
       ddl-auto: none
   liquibase:
     change-log: classpath:db/changelog/master.xml
-    labels: test-data
+    contexts: test-data

@@ -1,29 +1,33 @@
 package org.example.employee.controller;
 
+
 import org.example.employee.dto.request.DepartmentRequestDTO;
 import org.example.employee.dto.response.DepartmentResponseDTO;
+import org.example.employee.dto.response.EmployeeResponseDTO;
 import org.example.employee.error.NotFoundRecordException;
+import org.example.employee.service.EmployeeService;
 import org.example.employee.util.AppContextTest;
 import org.example.employee.util.TestUtil;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Locale;
 
 import static net.javacrumbs.jsonunit.spring.JsonUnitResultMatchers.json;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
+@TestMethodOrder(MethodOrderer.MethodName.class)
 public class DepartmentControllerTest extends AppContextTest {
 
     private static final Locale LOCALE_RU = new Locale("ru", "RU");
@@ -43,8 +47,16 @@ public class DepartmentControllerTest extends AppContextTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private EmployeeService employeeService;
+
+    /**
+     * должен выполнятьcя первым
+     * @throws Exception exception
+     */
     @Test
-    void getDepartmentsTest() throws Exception {
+    void aGetDepartmentsTest() throws Exception {
         final List<DepartmentResponseDTO> response =
                 TestUtil.readJsonResourceToList(RESPONSE_GET_ALL, DepartmentResponseDTO.class);
         final String expected = TestUtil.write(response);
@@ -81,12 +93,23 @@ public class DepartmentControllerTest extends AppContextTest {
                 .andExpect(content().string(expected));
     }
 
+    /**
+     * должен запускаться последним
+     * @throws Exception exception
+     */
     @Test
-    void deleteDepartmentSuccessTest() throws Exception {
+    void zDeleteDepartmentSuccessTest() throws Exception {
+        List<EmployeeResponseDTO> employees = employeeService.getEmployees();
+        Assertions.assertEquals(2, employees.size());
+        /*
+        Отдел удаляется вместе с сотрудниками отдела
+         */
         this.mockMvc
                 .perform(delete("/departmens/{id}", 1L))
                 .andDo(print())
                 .andExpect(status().isOk());
+        employees = employeeService.getEmployees();
+        Assertions.assertEquals(1, employees.size());
     }
 
     @Test
@@ -103,10 +126,12 @@ public class DepartmentControllerTest extends AppContextTest {
 
     @Test
     void createDepartmentSuccessTest() throws Exception {
-        final DepartmentResponseDTO response =
-                TestUtil.readJsonResource(RESPONSE_CREATE_SUCCESS, DepartmentResponseDTO.class);
+        InputStream inputStream = TestUtil.readResource(RESPONSE_CREATE_SUCCESS);
         final byte[] requestBytes = TestUtil.readResource(REQUEST_CREATE_SUCCESS).readAllBytes();
-        final String expected = TestUtil.write(response);
+        final String expected = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        /*
+        samples https://github.com/lukas-krecan/JsonUnit/blob/master/json-unit-spring/src/test/java/net/javacrumbs/jsonunit/spring/testit/MockMvcTest.java
+         */
         this.mockMvc
                 .perform(post("/departmens")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -115,7 +140,7 @@ public class DepartmentControllerTest extends AppContextTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().encoding(StandardCharsets.UTF_8))
-                .andExpect(json().ignoring("id").isEqualTo(response));
+                .andExpect(json().ignoring("##IGNORE##").isEqualTo(expected));
     }
 
     @Test
