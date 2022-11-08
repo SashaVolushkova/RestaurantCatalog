@@ -1,9 +1,7 @@
 {
   "id": 2,
-  "name": "Бубликов Андрей Сергеевич",
-  "email": "bublikov@mail.com",
-  "department": {
-    "id": 1
-  },
-  "salary": 100000.75
+  "name": "Нечаев Олег Андреевич",
+  "email": "nechaev@mail.com",
+  "departmentId": 2,
+  "salary": 400000
 }

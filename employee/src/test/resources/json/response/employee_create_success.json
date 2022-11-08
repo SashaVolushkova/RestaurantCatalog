@@ -1,9 +1,7 @@
 {
-  "id": 2,
+  "id": "##IGNORE##",
   "name": "Бубликов Андрей Сергеевич",
   "email": "bublikov@mail.com",
-  "department": {
-    "id": 1
-  },
+  "departmentId": 1,
   "salary": 100000.75
 }

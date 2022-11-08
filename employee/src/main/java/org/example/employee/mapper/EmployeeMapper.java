@@ -2,9 +2,9 @@ package org.example.employee.mapper;
 
 
 import org.example.employee.dto.request.EmployeeRequestDTO;
-import org.example.employee.dto.response.DepartmentResponseDTO;
 import org.example.employee.dto.response.EmployeeResponseDTO;
 import org.example.employee.enums.EmployeeType;
+import org.example.employee.model.DepartmentEntity;
 import org.example.employee.model.EmployeeEntity;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
@@ -19,18 +19,18 @@ import java.util.Optional;
 
 @Mapper(componentModel = "spring")
 public interface EmployeeMapper {
-    @Mapping(target = "department", ignore = true)
+    @Mapping(target = "departmentId", ignore = true)
     @Mapping(target = "salary", expression = "java(baseSalaryToCalculated(entity.getType(), entity.getBaseSalary()))")
     EmployeeResponseDTO toDTO(EmployeeEntity entity);
 
-    @Mapping(source = "departmentId", target = "department.id")
+    @Mapping(target = "department", ignore = true)
     EmployeeEntity toEntity(EmployeeRequestDTO request);
 
     @AfterMapping
     default void mapDepartment(EmployeeEntity entity, @MappingTarget EmployeeResponseDTO responseDTO) {
-        responseDTO.setDepartment(Optional.ofNullable(entity)
+        responseDTO.setDepartmentId(Optional.ofNullable(entity)
                 .map(EmployeeEntity::getDepartment)
-                .map(x -> new DepartmentResponseDTO(x.getId(), x.getName(), null, null))
+                .map(DepartmentEntity::getId)
                 .orElse(null)
         );
     }

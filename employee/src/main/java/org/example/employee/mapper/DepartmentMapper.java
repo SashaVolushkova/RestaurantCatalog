@@ -16,6 +16,7 @@ import java.util.Optional;
 public interface DepartmentMapper {
 
     @Mapping(target = "chief", ignore = true)
+    @Mapping(target = "parentId", source = "parentDepartment.id")
     DepartmentResponseDTO toDTO(DepartmentEntity entity);
 
     @AfterMapping

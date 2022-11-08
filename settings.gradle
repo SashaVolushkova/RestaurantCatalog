@@ -1,4 +1,5 @@
 rootProject.name = 'RestaurantCatalog'
 include 'restaurant-review'
 include 'employee'
+include 'user-service'
 

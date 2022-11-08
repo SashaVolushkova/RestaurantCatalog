@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class DepartmentResponseDTO {
     private Long id;
     private String name;
-    private DepartmentResponseDTO parentDepartment;
+    private Long parentId;
     private EmployeeResponseDTO chief;
 }

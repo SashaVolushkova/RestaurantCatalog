@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="create_table_employee" author="arthur">
+        <createTable tableName="employee">
+            <column name="id" type="bigint">
+                <constraints primaryKeyName="pk_employee_id" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="department_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="salary" type="currency">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create_table_department" author="arthur">
+        <createTable tableName="department">
+            <column name="id" type="bigint">
+                <constraints primaryKeyName="pk_department_id" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parent_department_id" type="bigint">
+                <constraints foreignKeyName="fk_department_id_parent_department_id"
+                             references="department(id)"/>
+            </column>
+            <column name="chief_id" type="bigint"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="add_employee_fk_constraint" author="arthur">
+        <addForeignKeyConstraint baseTableName="employee" baseColumnNames="department_id"
+                                 constraintName="fk_employee_department_id_department_id"
+                                 referencedTableName="department" referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="add_department_fk_constraint" author="arthur">
+        <addForeignKeyConstraint baseTableName="department" baseColumnNames="chief_id"
+                                 constraintName="fk_department_chief_id_employee_id"
+                                 referencedTableName="employee" referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="add_sequence" author="alexandra.volushkova">
+        <sql>
+            create sequence "EMPLOYEE_SEQUENCE" start with 1;
+            alter table employee alter column id set default nextval('EMPLOYEE_SEQUENCE');
+        </sql>
+        <sql>
+            create sequence "DEP_SEQUENCE" start with 1;
+            alter table department alter column id set default nextval('DEP_SEQUENCE');
+        </sql>
+    </changeSet>
+</databaseChangeLog>

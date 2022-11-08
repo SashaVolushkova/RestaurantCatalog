@@ -29,6 +29,10 @@ dependencies {
     //db
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.26'
     //junit
+    // https://mvnrepository.com/artifact/net.javacrumbs.json-unit/json-unit
+    testImplementation 'net.javacrumbs.json-unit:json-unit:2.36.0'
+    // https://mvnrepository.com/artifact/net.javacrumbs.json-unit/json-unit-spring
+    implementation 'net.javacrumbs.json-unit:json-unit-spring:2.36.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     //lombok + mapstruct

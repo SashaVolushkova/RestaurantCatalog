@@ -12,6 +12,6 @@ public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Long> 
     @Query("SELECT e FROM EmployeeEntity e JOIN FETCH e.department WHERE e.id = :id")
     Optional<EmployeeEntity> getEmployeeById(@Param("id") Long id);
 
-    @Query("SELECT e FROM EmployeeEntity e JOIN FETCH e.department")
+    @Query("SELECT e FROM EmployeeEntity e JOIN FETCH e.department order by e.name")
     List<EmployeeEntity> getEmployees();
 }

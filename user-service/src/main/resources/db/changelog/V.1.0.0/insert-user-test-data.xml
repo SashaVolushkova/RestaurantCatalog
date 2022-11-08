@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="insert_user_test_data" author="arthur" context="test">
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="USER_SEQ"/>
+            <column name="nickname" value="Enryu"/>
+            <column name="email" value="test@gmail.com"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="USER_SEQ"/>
+            <column name="nickname" value="Urek"/>
+            <column name="email" value="test@yandex.ru"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

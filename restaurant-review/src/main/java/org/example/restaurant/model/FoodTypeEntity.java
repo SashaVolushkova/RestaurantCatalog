@@ -29,8 +29,7 @@ public class FoodTypeEntity {
 
     public boolean equals(final Object o) {
         if (o == this) return true;
-        if (!(o instanceof FoodTypeEntity)) return false;
-        final FoodTypeEntity other = (FoodTypeEntity) o;
+        if (!(o instanceof final FoodTypeEntity other)) return false;
         if (!other.canEqual(this)) return false;
         final Object this$name = this.getName();
         final Object other$name = other.getName();
