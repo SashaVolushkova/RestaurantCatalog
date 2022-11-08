@@ -1,5 +1,6 @@
 package org.example.employee.controller;
 
+import org.example.employee.controller.implementations.EmployeeController;
 import org.example.employee.dto.request.EmployeeRequestDTO;
 import org.example.employee.dto.response.EmployeeResponseDTO;
 import org.example.employee.error.NotFoundRecordException;

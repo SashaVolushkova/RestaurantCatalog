@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
-
     private static final String EMPLOYEE_TABLE = "employee";
 
     private final EmployeeRepository employeeRepository;
+
     private final EmployeeMapper mapper;
 
     @Override

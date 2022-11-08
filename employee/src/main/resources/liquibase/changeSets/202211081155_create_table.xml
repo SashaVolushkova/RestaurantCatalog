@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog logicalFilePath="liquibase/changeSets/202211081155_create_table.xml"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet id="202211081155" author="savkov_pavel">
+        <sql>
+            CREATE TABLE department
+            (
+                id                   bigserial    NOT NULL,
+                name                 varchar(255) NOT NULL,
+                chief_id             bigint,
+                parent_department_id bigint,
+                PRIMARY KEY (id)
+            );
+
+            CREATE TABLE employee
+            (
+                id            bigserial      NOT NULL,
+                name          varchar(255)   NOT NULL,
+                email         varchar(255)   NOT NULL,
+                base_salary   numeric(10, 2) NOT NULL,
+                employee_type varchar(255)   NOT NULL,
+                department_id bigint         NOT NULL,
+                PRIMARY KEY (id),
+                UNIQUE (email)
+            );
+
+            ALTER TABLE department
+                ADD CONSTRAINT fk_chiefId_to_employee
+                    FOREIGN KEY (chief_id) REFERENCES employee (id);
+
+            ALTER TABLE employee
+                ADD CONSTRAINT fk_depId_to_department
+                    FOREIGN KEY (department_id) REFERENCES department (id);
+        </sql>
+        <comment>Заполнение таблиц</comment>
+    </changeSet>
+</databaseChangeLog>

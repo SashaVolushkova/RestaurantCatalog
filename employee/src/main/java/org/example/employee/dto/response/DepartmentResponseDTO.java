@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DepartmentResponseDTO {
-
     private Long id;
     private String name;
     private DepartmentResponseDTO parentDepartment;

@@ -1,11 +1,22 @@
+
+
 spring:
   datasource:
-    url: jdbc:h2:mem:testDB
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
+    url: jdbc:postgresql://localhost:5432/axenix-learning-java-up
+    username: postgres
+    password: Danifrenchplay23
+    driverClassName: org.postgresql.Driver
   jpa:
-    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
+    database: postgresql
+  liquibase:
+    change-log: classpath:liquibase/root-changelog.xml
+
+application-service-config:
+  project-success: 0.9
+
+server:
+  port: 8090

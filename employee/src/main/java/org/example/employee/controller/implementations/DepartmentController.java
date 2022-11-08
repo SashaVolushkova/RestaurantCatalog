@@ -1,6 +1,7 @@
-package org.example.employee.controller;
+package org.example.employee.controller.implementations;
 
 import lombok.AllArgsConstructor;
+import org.example.employee.controller.interfaces.DepartmentOperations;
 import org.example.employee.dto.request.DepartmentRequestDTO;
 import org.example.employee.dto.response.DepartmentResponseDTO;
 import org.example.employee.service.DepartmentService;
@@ -12,35 +13,35 @@ import javax.validation.groups.Default;
 import java.util.List;
 
 @RestController
-@RequestMapping("/departmens")
+@RequestMapping("/departments")
 @AllArgsConstructor
-public class DepartmentController {
+public class DepartmentController implements DepartmentOperations {
     private final DepartmentService departmentService;
 
-    @GetMapping("/{id}")
-    public DepartmentResponseDTO getDepartmentById(@PathVariable("id") Long id) {
+    @Override
+    public DepartmentResponseDTO getDepartmentById(Long id) {
         return departmentService.getDepartmentById(id);
     }
 
-    @GetMapping
+    @Override
     public List<DepartmentResponseDTO> getDepartments() {
         return departmentService.getDepartments();
     }
 
-    @PostMapping(produces = "application/json;charset=UTF-8")
+    @Override
     public DepartmentResponseDTO createDepartment(
             @Validated({Default.class, ValidationGroups.CreateInfo.class}) @RequestBody DepartmentRequestDTO request) {
         return departmentService.createDepartment(request);
     }
 
-    @PutMapping(produces = "application/json;charset=UTF-8")
+    @Override
     public DepartmentResponseDTO updateDepartment(
             @Validated({Default.class, ValidationGroups.UpdateInfo.class}) @RequestBody DepartmentRequestDTO requestDTO) {
         return departmentService.updateDepartment(requestDTO);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteDepartment(@PathVariable("id") Long id) {
+    @Override
+    public void deleteDepartment(Long id) {
         departmentService.deleteDepartment(id);
     }
 }

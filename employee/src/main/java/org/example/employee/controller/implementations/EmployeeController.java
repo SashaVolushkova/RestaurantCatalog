@@ -1,12 +1,15 @@
-package org.example.employee.controller;
+package org.example.employee.controller.implementations;
 
 import lombok.AllArgsConstructor;
+import org.example.employee.controller.interfaces.EmployeeOperations;
 import org.example.employee.dto.request.EmployeeRequestDTO;
 import org.example.employee.dto.response.EmployeeResponseDTO;
 import org.example.employee.service.EmployeeService;
 import org.example.employee.validation.ValidationGroups;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.groups.Default;
 import java.util.List;
@@ -14,34 +17,34 @@ import java.util.List;
 @RestController
 @RequestMapping("/employees")
 @AllArgsConstructor
-public class EmployeeController {
+public class EmployeeController implements EmployeeOperations {
 
     private final EmployeeService employeeService;
 
-    @GetMapping("/{id}")
-    public EmployeeResponseDTO getEmployeeById(@PathVariable("id") Long id) {
+    @Override
+    public EmployeeResponseDTO getEmployeeById(Long id) {
         return employeeService.getEmployeeById(id);
     }
 
-    @GetMapping
+    @Override
     public List<EmployeeResponseDTO> getEmployees() {
         return employeeService.getEmployees();
     }
 
-    @PostMapping(produces = "application/json;charset=UTF-8")
+    @Override
     public EmployeeResponseDTO createEmployee(
             @Validated({Default.class,ValidationGroups.CreateInfo.class}) @RequestBody EmployeeRequestDTO request) {
         return employeeService.createEmployee(request);
     }
 
-    @PutMapping(produces = "application/json;charset=UTF-8")
+    @Override
     public EmployeeResponseDTO updateEmployee(
             @Validated({Default.class, ValidationGroups.UpdateInfo.class}) @RequestBody EmployeeRequestDTO request) {
         return employeeService.updateEmployee(request);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteEmployee(@PathVariable("id") Long id) {
+    @Override
+    public void deleteEmployee(Long id) {
         employeeService.deleteEmployee(id);
     }
 }

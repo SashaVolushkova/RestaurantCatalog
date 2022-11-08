@@ -9,7 +9,6 @@ import javax.validation.constraints.Pattern;
 
 @Data
 public class DepartmentRequestDTO {
-
     @NotNull(groups = ValidationGroups.UpdateInfo.class)
     @Null(groups = ValidationGroups.CreateInfo.class)
     private Long id;
