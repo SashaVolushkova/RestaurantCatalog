@@ -1,8 +1,8 @@
 plugins {
-    id 'org.springframework.boot' version '2.7.1'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version '2.7.4'
+    id 'io.spring.dependency-management' version '1.0.14.RELEASE'
     id 'java'
-    id "jacoco"
+    id "org.sonarqube" version "3.4.0.2513"
 }
 
 group 'org.example'
@@ -57,9 +57,3 @@ test {
     useJUnitPlatform()
 }
 targetCompatibility = JavaVersion.VERSION_17
-
-jacocoTestReport {
-    reports {
-        xml.enabled true
-    }
-}

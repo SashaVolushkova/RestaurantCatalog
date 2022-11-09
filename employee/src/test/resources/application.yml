@@ -12,3 +12,6 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/master.xml
     contexts: test-data
+  sql:
+    init:
+      encoding: UTF-8
