@@ -7,7 +7,9 @@ import org.example.employee.error.NotFoundRecordException;
 import org.example.employee.mapper.DepartmentMapper;
 import org.example.employee.model.DepartmentEntity;
 import org.example.employee.repository.DepartmentRepository;
+import org.example.employee.repository.EmployeeRepository;
 import org.example.employee.service.DepartmentService;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,6 +24,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     private static final String DEPARTMENT_TABLE = "department";
 
     private final DepartmentRepository departmentRepository;
+    private final EmployeeRepository employeeRepository;
     private final DepartmentMapper mapper;
 
     @Override
@@ -67,6 +70,13 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     @Transactional
     public DepartmentResponseDTO updateDepartment(DepartmentRequestDTO request) {
+        employeeRepository.getEmployeeById(request.getChiefId()).ifPresent(e -> {
+            if (!e.getDepartment().getId().equals(request.getParentDepartmentId())) {
+                throw new ServiceException("Пользователь id:{" +
+                        e.getId() + "} не относится к департаменту id:{" + request.getId() + "}");
+            }
+        });
+
         return Optional.of(request)
                 .map(mapper::toEntity)
                 .map(departmentRepository::save)
