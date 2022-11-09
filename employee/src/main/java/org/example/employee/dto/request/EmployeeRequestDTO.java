@@ -24,11 +24,11 @@ public class EmployeeRequestDTO {
     @NotNull
     private Long departmentId;
 
-    @NotNull(groups = ValidationGroups.UpdateInfo.class)
-    @Null(groups = ValidationGroups.CreateInfo.class)
-    @DecimalMin(value = "0.0", inclusive = false)
-    @Digits(integer = 10, fraction = 2)
-    private BigDecimal salary;
+//    @NotNull(groups = ValidationGroups.UpdateInfo.class)
+//    @Null(groups = ValidationGroups.CreateInfo.class)
+//    @DecimalMin(value = "0.0", inclusive = false)
+//    @Digits(integer = 10, fraction = 2)
+//    private BigDecimal salary;
 
     @NotNull
     @DecimalMin(value = "0.0", inclusive = false)

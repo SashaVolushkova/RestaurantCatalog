@@ -79,6 +79,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeEntity.setEmail(updateEmployee.getEmail());
         employeeEntity.setName(updateEmployee.getName());
         employeeEntity.setBaseSalary(updateEmployee.getBaseSalary());
+        employeeEntity.setType(updateEmployee.getType());
         return mapper.toDTO(employeeEntity);
     }
 
