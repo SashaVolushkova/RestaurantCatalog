@@ -3,6 +3,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.14.RELEASE'
     id "org.sonarqube" version "3.4.0.2513"
     id 'java'
+    id 'jacoco'
 }
 
 group = 'org.example'
@@ -47,4 +48,12 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+    dependsOn test // tests are required to run before generating the report
 }
