@@ -12,10 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.Set;
-import java.util.stream.Collectors;
-
 @RestController
 @RequestMapping("/users")
 @AllArgsConstructor

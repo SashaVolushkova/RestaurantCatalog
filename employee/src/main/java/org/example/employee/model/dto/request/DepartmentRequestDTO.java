@@ -1,4 +1,4 @@
-package org.example.employee.dto.request;
+package org.example.employee.model.dto.request;
 
 import lombok.Data;
 import org.example.employee.validation.ValidationGroups;
@@ -9,7 +9,6 @@ import javax.validation.constraints.Pattern;
 
 @Data
 public class DepartmentRequestDTO {
-
     @NotNull(groups = ValidationGroups.UpdateInfo.class)
     @Null(groups = ValidationGroups.CreateInfo.class)
     private Long id;

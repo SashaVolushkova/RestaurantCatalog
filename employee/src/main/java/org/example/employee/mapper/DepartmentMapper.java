@@ -1,10 +1,10 @@
 package org.example.employee.mapper;
 
-import org.example.employee.dto.request.DepartmentRequestDTO;
-import org.example.employee.dto.response.DepartmentResponseDTO;
-import org.example.employee.dto.response.EmployeeResponseDTO;
-import org.example.employee.model.DepartmentEntity;
-import org.example.employee.model.EmployeeEntity;
+import org.example.employee.model.dto.request.DepartmentRequestDTO;
+import org.example.employee.model.dto.response.DepartmentResponseDTO;
+import org.example.employee.model.dto.response.EmployeeResponseDTO;
+import org.example.employee.model.enities.DepartmentEntity;
+import org.example.employee.model.enities.EmployeeEntity;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog logicalFilePath="liquibase/changeSets/202211081156_fill_table.xml"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet id="202211081156" author="savkov_pavel">
+        <sql>
+            INSERT INTO department (name, chief_id, parent_department_id)
+            VALUES ('Абстрактный департамент', null, null),
+                   ('Ростов На Дону', null, 1),
+                   ('Москва', null, 1),
+                   ('Таганрог', null, 2),
+                   ('Тверь', null, 1),
+                   ('Казань', null, 3),
+                   ('Санкт Петербург', null, 3),
+                   ('Краснодар', null, 2);
+
+            INSERT INTO employee (name, email, base_salary, employee_type, department_id)
+            VALUES ('Савков Павел', 'pavel.savkov@ax-team.com', 100, 'MANAGER', 2),
+                   ('Пустовой Артём', 'artem.pustovoy@ax-team.com', 50, 'PROGRAMMER', 8),
+                   ('Войтов Кирилл', 'kirill.voytov@ax-team.com', 40, 'TESTER', 2),
+                   ('Волушкова Александра', 'alexandra.volushkova@ax-team.com', 100, 'MANAGER', 5),
+                   ('Дения Яровой', 'denis.yarovoy@ax-team.com', 100, 'MANAGER', 3);
+
+            UPDATE department set chief_id = 5 WHERE id = 3;
+            UPDATE department set chief_id = 4 WHERE id = 5;
+            UPDATE department set chief_id = 1 WHERE id = 2;
+        </sql>
+        <comment>Заполнение таблиц</comment>
+    </changeSet>
+</databaseChangeLog>

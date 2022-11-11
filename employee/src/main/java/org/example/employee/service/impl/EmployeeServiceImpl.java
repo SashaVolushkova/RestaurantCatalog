@@ -1,18 +1,19 @@
 package org.example.employee.service.impl;
 
 import lombok.AllArgsConstructor;
-import org.example.employee.dto.request.EmployeeRequestDTO;
-import org.example.employee.dto.response.EmployeeResponseDTO;
+import org.example.employee.model.dto.request.EmployeeRequestDTO;
+import org.example.employee.model.dto.response.EmployeeResponseDTO;
 import org.example.employee.error.NotFoundRecordException;
 import org.example.employee.mapper.EmployeeMapper;
-import org.example.employee.model.DepartmentEntity;
-import org.example.employee.model.EmployeeEntity;
+import org.example.employee.model.enities.DepartmentEntity;
+import org.example.employee.model.enities.EmployeeEntity;
 import org.example.employee.repository.DepartmentRepository;
 import org.example.employee.repository.EmployeeRepository;
 import org.example.employee.service.EmployeeService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private static final String EMPLOYEE_TABLE = "employee";
 
     private final EmployeeRepository employeeRepository;
+
     private final EmployeeMapper mapper;
     private final DepartmentRepository departmentRepository;
 
@@ -36,10 +38,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeResponseDTO> getEmployees() {
+    public List<EmployeeResponseDTO> getEmployeeResponseDTOs() {
         return employeeRepository.getEmployees().stream()
                 .map(mapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<EmployeeEntity> getEmployees() {
+        return new ArrayList<>(employeeRepository.getEmployees());
+    }
+
+    @Override
+    public List<EmployeeEntity> getEmployeesByDepartmentId(Long departmentId) {
+        return new ArrayList<>(employeeRepository.getEmployeesByDepartmentId(departmentId));
     }
 
     @Override
@@ -77,7 +89,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeEntity.setDepartment(updateEmployee.getDepartment());
         employeeEntity.setEmail(updateEmployee.getEmail());
         employeeEntity.setName(updateEmployee.getName());
-        employeeEntity.setSalary(updateEmployee.getSalary());
+        employeeEntity.setBaseSalary(updateEmployee.getBaseSalary());
+        employeeEntity.setType(updateEmployee.getType());
         return mapper.toDTO(employeeEntity);
     }
 

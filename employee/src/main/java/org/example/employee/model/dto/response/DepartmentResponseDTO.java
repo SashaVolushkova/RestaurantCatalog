@@ -1,4 +1,4 @@
-package org.example.employee.dto.response;
+package org.example.employee.model.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DepartmentResponseDTO {
-
     private Long id;
     private String name;
     private Long parentId;

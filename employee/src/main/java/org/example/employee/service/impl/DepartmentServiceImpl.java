@@ -1,14 +1,16 @@
 package org.example.employee.service.impl;
 
 import lombok.AllArgsConstructor;
-import org.example.employee.dto.request.DepartmentRequestDTO;
-import org.example.employee.dto.response.DepartmentResponseDTO;
+import org.example.employee.model.dto.request.DepartmentRequestDTO;
+import org.example.employee.model.dto.response.DepartmentResponseDTO;
+import org.example.employee.error.BusinessRuntimeException;
+import org.example.employee.error.ErrorCode;
 import org.example.employee.error.NotFoundRecordException;
 import org.example.employee.mapper.DepartmentMapper;
-import org.example.employee.model.DepartmentEntity;
+import org.example.employee.model.enities.DepartmentEntity;
 import org.example.employee.repository.DepartmentRepository;
+import org.example.employee.repository.EmployeeRepository;
 import org.example.employee.service.DepartmentService;
-import org.example.employee.service.EmployeeService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -23,6 +25,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     private static final String DEPARTMENT_TABLE = "department";
 
     private final DepartmentRepository departmentRepository;
+    private final EmployeeRepository employeeRepository;
     private final DepartmentMapper mapper;
 
     @Override
@@ -68,6 +71,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     @Transactional
     public DepartmentResponseDTO updateDepartment(DepartmentRequestDTO request) {
+        employeeRepository.getEmployeeById(request.getChiefId()).ifPresent(e -> {
+            if (!e.getDepartment().getId().equals(request.getParentDepartmentId())) {
+                throw new BusinessRuntimeException(ErrorCode.WRONG_EMPLOYEE_REQUESTED, e.getId(), request.getId());
+            }
+        });
+
         return Optional.of(request)
                 .map(mapper::toEntity)
                 .map(departmentRepository::save)

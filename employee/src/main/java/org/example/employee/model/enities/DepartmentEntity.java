@@ -1,4 +1,4 @@
-package org.example.employee.model;
+package org.example.employee.model.enities;
 
 import lombok.*;
 import org.hibernate.Hibernate;
