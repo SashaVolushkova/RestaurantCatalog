@@ -10,8 +10,4 @@
     </changeSet>
 
     <include file="create-tables.xml" relativeToChangelogFile="true"/>
-
-    <changeSet id="insert_data_unit_test" author="alexandra.volushkova" context="test-data">
-        <sqlFile path="\db\changelog\v.1.0.0\insert_test_data.sql"/>
-    </changeSet>
 </databaseChangeLog>

@@ -1,0 +1,44 @@
+plugins {
+    id "org.sonarqube" version "3.4.0.2513"
+    id 'jacoco'
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+sourceCompatibility = '17'
+targetCompatibility = JavaVersion.VERSION_17
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+ext {
+    mapstructVersion = "1.5.3.Final"
+    lombokVersion = "1.18.24"
+    lombokMapstructBindingVersion = "0.2.0"
+}
+
+sonarqube {
+    properties {
+        property "sonar.login", "admin"
+        property "sonar.password", "CRf49#ezLrS_FGG"
+        property "sonar.host.url", "http://localhost:9000"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.projectName", "RestaurantCatalog_plugin"
+        property "sonar.projectKey", "sqp_fe2a0b53faceb45d672a122ce83fe4dbd89ef83c"
+    }
+}
+subprojects {
+    version = '1.0'
+    sonarqube {
+        properties {
+            property "sonar.sources", "src/main"
+            property "sonar.tests", "src/test"
+            // I was testing with JaCoCo, so the next line is not needed if you're using some other tool
+            property "sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/jacoco/jacocoTestReport.xml"
+            property "sonar.host.url", "http://localhost:9000"
+        }
+    }
+}

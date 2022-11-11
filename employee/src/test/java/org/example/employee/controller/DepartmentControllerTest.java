@@ -15,6 +15,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
@@ -30,7 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@TestMethodOrder(MethodOrderer.MethodName.class)
+@Sql(scripts = "/data/insert_test_data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(encoding = "utf-8"))
+@Sql(scripts = "/data/clear_data.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(encoding = "utf-8"))
 public class DepartmentControllerTest extends AppContextTest {
 
     private static final Locale LOCALE_RU = new Locale("ru", "RU");
@@ -59,7 +62,7 @@ public class DepartmentControllerTest extends AppContextTest {
      * @throws Exception exception
      */
     @Test
-    void aGetDepartmentsTest() throws Exception {
+    void getDepartmentsTest() throws Exception {
         final List<DepartmentResponseDTO> response =
                 TestUtil.readJsonResourceToList(RESPONSE_GET_ALL, DepartmentResponseDTO.class);
         final String expected = TestUtil.write(response);
@@ -96,13 +99,9 @@ public class DepartmentControllerTest extends AppContextTest {
                 .andExpect(content().string(expected));
     }
 
-    /**
-     * должен запускаться последним
-     * @throws Exception exception
-     */
     @Test
-    void zDeleteDepartmentSuccessTest() throws Exception {
-        List<EmployeeResponseDTO> employees = employeeService.getEmployeeResponseDTOs();
+    void deleteDepartmentSuccessTest() throws Exception {
+        List<EmployeeResponseDTO> employees = employeeService.getEmployees();
         Assertions.assertEquals(2, employees.size());
         /*
         Отдел удаляется вместе с сотрудниками отдела
@@ -113,6 +112,7 @@ public class DepartmentControllerTest extends AppContextTest {
                 .andExpect(status().isOk());
         employees = employeeService.getEmployeeResponseDTOs();
         Assertions.assertEquals(1, employees.size());
+        Assertions.assertEquals(2L, employees.get(0).getDepartmentId());
     }
 
     @Test
