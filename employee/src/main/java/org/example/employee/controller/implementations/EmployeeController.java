@@ -28,7 +28,7 @@ public class EmployeeController implements EmployeeOperations {
 
     @Override
     public List<EmployeeResponseDTO> getEmployees() {
-        return employeeService.getEmployees();
+        return employeeService.getEmployeeResponseDTOs();
     }
 
     @Override

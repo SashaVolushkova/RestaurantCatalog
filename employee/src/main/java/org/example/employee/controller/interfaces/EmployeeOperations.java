@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.groups.Default;
 import java.util.List;
 
-@RequestMapping("/default")
+@RequestMapping
 public interface EmployeeOperations {
     @GetMapping("/{id}")
     EmployeeResponseDTO getEmployeeById(@PathVariable("id") Long id);

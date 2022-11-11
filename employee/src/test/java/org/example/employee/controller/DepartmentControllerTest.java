@@ -102,7 +102,7 @@ public class DepartmentControllerTest extends AppContextTest {
      */
     @Test
     void zDeleteDepartmentSuccessTest() throws Exception {
-        List<EmployeeResponseDTO> employees = employeeService.getEmployees();
+        List<EmployeeResponseDTO> employees = employeeService.getEmployeeResponseDTOs();
         Assertions.assertEquals(2, employees.size());
         /*
         Отдел удаляется вместе с сотрудниками отдела
@@ -111,7 +111,7 @@ public class DepartmentControllerTest extends AppContextTest {
                 .perform(delete("/departmens/{id}", 1L))
                 .andDo(print())
                 .andExpect(status().isOk());
-        employees = employeeService.getEmployees();
+        employees = employeeService.getEmployeeResponseDTOs();
         Assertions.assertEquals(1, employees.size());
     }
 

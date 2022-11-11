@@ -35,6 +35,6 @@
                 ADD CONSTRAINT fk_depId_to_department
                     FOREIGN KEY (department_id) REFERENCES department (id);
         </sql>
-        <comment>Заполнение таблиц</comment>
+        <comment>Создание таблицы</comment>
     </changeSet>
 </databaseChangeLog>

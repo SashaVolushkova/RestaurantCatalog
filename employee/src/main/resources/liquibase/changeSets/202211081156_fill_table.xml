@@ -22,6 +22,7 @@
                    ('Войтов Кирилл', 'kirill.voytov@ax-team.com', 40, 'TESTER', 2),
                    ('Волушкова Александра', 'alexandra.volushkova@ax-team.com', 100, 'MANAGER', 5),
                    ('Дения Яровой', 'denis.yarovoy@ax-team.com', 100, 'MANAGER', 3);
+
             UPDATE department set chief_id = 5 WHERE id = 3;
             UPDATE department set chief_id = 4 WHERE id = 5;
             UPDATE department set chief_id = 1 WHERE id = 2;

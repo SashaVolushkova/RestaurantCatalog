@@ -13,6 +13,7 @@ import org.example.employee.service.EmployeeService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,10 +38,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeResponseDTO> getEmployees() {
+    public List<EmployeeResponseDTO> getEmployeeResponseDTOs() {
         return employeeRepository.getEmployees().stream()
                 .map(mapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<EmployeeEntity> getEmployees() {
+        return new ArrayList<>(employeeRepository.getEmployees());
+    }
+
+    @Override
+    public List<EmployeeEntity> getEmployeesByDepartmentId(Long departmentId) {
+        return new ArrayList<>(employeeRepository.getEmployeesByDepartmentId(departmentId));
     }
 
     @Override
