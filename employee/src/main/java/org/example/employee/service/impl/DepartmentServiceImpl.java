@@ -3,13 +3,14 @@ package org.example.employee.service.impl;
 import lombok.AllArgsConstructor;
 import org.example.employee.dto.request.DepartmentRequestDTO;
 import org.example.employee.dto.response.DepartmentResponseDTO;
+import org.example.employee.error.BusinessRuntimeException;
+import org.example.employee.error.ErrorCode;
 import org.example.employee.error.NotFoundRecordException;
 import org.example.employee.mapper.DepartmentMapper;
 import org.example.employee.model.DepartmentEntity;
 import org.example.employee.repository.DepartmentRepository;
 import org.example.employee.repository.EmployeeRepository;
 import org.example.employee.service.DepartmentService;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -72,8 +73,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public DepartmentResponseDTO updateDepartment(DepartmentRequestDTO request) {
         employeeRepository.getEmployeeById(request.getChiefId()).ifPresent(e -> {
             if (!e.getDepartment().getId().equals(request.getParentDepartmentId())) {
-                throw new ServiceException("Пользователь id:{" +
-                        e.getId() + "} не относится к департаменту id:{" + request.getId() + "}");
+                throw new BusinessRuntimeException(ErrorCode.WRONG_EMPLOYEE_REQUESTED, e.getId(), request.getId());
             }
         });
 
