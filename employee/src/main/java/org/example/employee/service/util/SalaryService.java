@@ -1,6 +1,6 @@
-package org.example.employee.service;
+package org.example.employee.service.util;
 
-import org.example.employee.enums.EmployeeType;
+import org.example.employee.model.enums.EmployeeType;
 
 import java.math.BigDecimal;
 

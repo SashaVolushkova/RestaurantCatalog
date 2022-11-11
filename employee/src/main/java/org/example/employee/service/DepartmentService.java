@@ -1,7 +1,7 @@
 package org.example.employee.service;
 
-import org.example.employee.dto.request.DepartmentRequestDTO;
-import org.example.employee.dto.response.DepartmentResponseDTO;
+import org.example.employee.model.dto.request.DepartmentRequestDTO;
+import org.example.employee.model.dto.response.DepartmentResponseDTO;
 
 import java.util.List;
 

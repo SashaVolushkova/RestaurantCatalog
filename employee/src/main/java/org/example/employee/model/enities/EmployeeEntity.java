@@ -1,7 +1,7 @@
-package org.example.employee.model;
+package org.example.employee.model.enities;
 
 import lombok.*;
-import org.example.employee.enums.EmployeeType;
+import org.example.employee.model.enums.EmployeeType;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

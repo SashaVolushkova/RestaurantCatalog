@@ -1,9 +1,9 @@
 package org.example.employee.controller;
 
 
-import org.example.employee.dto.request.DepartmentRequestDTO;
-import org.example.employee.dto.response.DepartmentResponseDTO;
-import org.example.employee.dto.response.EmployeeResponseDTO;
+import org.example.employee.model.dto.request.DepartmentRequestDTO;
+import org.example.employee.model.dto.response.DepartmentResponseDTO;
+import org.example.employee.model.dto.response.EmployeeResponseDTO;
 import org.example.employee.error.NotFoundRecordException;
 import org.example.employee.service.EmployeeService;
 import org.example.employee.util.AppContextTest;

@@ -1,7 +1,7 @@
-package org.example.employee.dto.request;
+package org.example.employee.model.dto.request;
 
 import lombok.Data;
-import org.example.employee.enums.EmployeeType;
+import org.example.employee.model.enums.EmployeeType;
 import org.example.employee.validation.ValidationGroups;
 
 import javax.validation.constraints.*;

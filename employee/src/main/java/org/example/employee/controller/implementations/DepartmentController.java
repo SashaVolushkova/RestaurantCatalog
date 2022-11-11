@@ -2,8 +2,8 @@ package org.example.employee.controller.implementations;
 
 import lombok.AllArgsConstructor;
 import org.example.employee.controller.interfaces.DepartmentOperations;
-import org.example.employee.dto.request.DepartmentRequestDTO;
-import org.example.employee.dto.response.DepartmentResponseDTO;
+import org.example.employee.model.dto.request.DepartmentRequestDTO;
+import org.example.employee.model.dto.response.DepartmentResponseDTO;
 import org.example.employee.service.DepartmentService;
 import org.example.employee.validation.ValidationGroups;
 import org.springframework.validation.annotation.Validated;

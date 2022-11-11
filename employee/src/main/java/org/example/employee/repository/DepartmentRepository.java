@@ -1,6 +1,6 @@
 package org.example.employee.repository;
 
-import org.example.employee.model.DepartmentEntity;
+import org.example.employee.model.enities.DepartmentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

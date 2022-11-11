@@ -1,4 +1,4 @@
-package org.example.employee.dto.request;
+package org.example.employee.model.dto.request;
 
 import lombok.Data;
 import org.example.employee.validation.ValidationGroups;

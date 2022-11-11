@@ -1,17 +1,20 @@
-package org.example.employee.dto.response;
+package org.example.employee.model.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DepartmentResponseDTO {
+public class EmployeeResponseDTO {
     private Long id;
     private String name;
-    private Long parentId;
-    private EmployeeResponseDTO chief;
+    private String email;
+    private Long departmentId;
+    private BigDecimal salary;
 }

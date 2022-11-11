@@ -1,13 +1,13 @@
 package org.example.employee.service.impl;
 
 import lombok.AllArgsConstructor;
-import org.example.employee.dto.request.DepartmentRequestDTO;
-import org.example.employee.dto.response.DepartmentResponseDTO;
+import org.example.employee.model.dto.request.DepartmentRequestDTO;
+import org.example.employee.model.dto.response.DepartmentResponseDTO;
 import org.example.employee.error.BusinessRuntimeException;
 import org.example.employee.error.ErrorCode;
 import org.example.employee.error.NotFoundRecordException;
 import org.example.employee.mapper.DepartmentMapper;
-import org.example.employee.model.DepartmentEntity;
+import org.example.employee.model.enities.DepartmentEntity;
 import org.example.employee.repository.DepartmentRepository;
 import org.example.employee.repository.EmployeeRepository;
 import org.example.employee.service.DepartmentService;
