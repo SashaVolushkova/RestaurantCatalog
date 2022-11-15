@@ -1,5 +1,6 @@
 package org.example.restaurant;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
@@ -7,6 +8,7 @@ import java.io.FileNotFoundException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SuppressWarnings({"UnusedAssignment", "CaughtExceptionImmediatelyRethrown"})
+@Disabled
 public class ExceptionTest {
     @Test
     public void test1() {

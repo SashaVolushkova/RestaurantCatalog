@@ -15,6 +15,9 @@ public class CService {
     public C doSmth() {
         A a = aService.doSmth();
         B b = bService.doSmth(a);
+        if(b.isSmth()) {
+            return null;
+        }
         return getCObjectFromBandA(a, b);
     }
 

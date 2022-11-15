@@ -2,6 +2,7 @@ package org.example.restaurant;
 
 import org.example.restaurant.service.RoadMap;
 import org.example.restaurant.service.impl.RoadMapImpl;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -9,6 +10,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection", "unused"})
+@Disabled
 public class JavaCollectionsTest {
     @Test
     public void test1() {

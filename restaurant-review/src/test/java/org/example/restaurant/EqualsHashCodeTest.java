@@ -1,6 +1,7 @@
 package org.example.restaurant;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -9,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @SuppressWarnings("ALL")
+@Disabled
 public class EqualsHashCodeTest {
     static class A {
         @Override

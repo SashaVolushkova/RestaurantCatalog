@@ -11,6 +11,6 @@ public class BService {
     }
 
     private B creatBFromA(A a) {
-        return new B();
+        return new B(false);
     }
 }

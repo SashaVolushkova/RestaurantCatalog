@@ -1,10 +1,12 @@
 package org.example.restaurant;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
 @SuppressWarnings({"ParameterCanBeLocal", "unused", "StringOperationCanBeSimplified", "UnusedAssignment"})
+@Disabled
 public class JavaCoreTest {
     @Test
     void test1() {

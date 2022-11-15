@@ -8,10 +8,7 @@ import org.example.restaurant.repository.RestaurantRepository;
 import org.example.restaurant.service.Service;
 import org.example.restaurant.service.ServiceForTest;
 import org.example.restaurant.util.AppContextTest;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 
@@ -22,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("unused")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Disabled
 public class SpringTest extends AppContextTest {
     @Autowired
     private Service service;

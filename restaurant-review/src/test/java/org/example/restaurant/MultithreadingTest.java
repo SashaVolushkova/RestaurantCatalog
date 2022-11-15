@@ -2,6 +2,7 @@ package org.example.restaurant;
 
 import org.example.restaurant.service.ArrayFiller;
 import org.example.restaurant.service.impl.ArrayFillerInTwoThreads;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
+@Disabled
 public class MultithreadingTest {
     @Test
     public void test1() {

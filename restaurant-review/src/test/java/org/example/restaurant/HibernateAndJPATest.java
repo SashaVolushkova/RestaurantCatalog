@@ -9,10 +9,7 @@ import org.example.restaurant.repository.FoodTypeRepository;
 import org.example.restaurant.repository.RestaurantRepository;
 import org.example.restaurant.repository.ReviewRepository;
 import org.example.restaurant.util.AppContextTest;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
@@ -25,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings({"OptionalGetWithoutIsPresent", "unused"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Disabled
 public class HibernateAndJPATest extends AppContextTest {
     @Autowired
     private RestaurantRepository restaurantRepository;
