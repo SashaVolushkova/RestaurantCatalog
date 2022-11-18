@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service("fileReader")
-@Profile("!profileA")
+@Profile("!test")
 public class FileReader implements ObjectReader {
     @Override
     public String readObject() {

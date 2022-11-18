@@ -15,12 +15,12 @@ public class ServiceWithDbForTest {
     @Transactional
     public void updateData(Long id, String newData) {
         Optional<Data> byId = dataRepository.findById(id);
-        if(byId.isEmpty()) throw new RuntimeException(); // обработать ошибку, если не найдена сущность
-        Data data = byId.get();
-        data.setData(newData);
+        byId.ifPresentOrElse(data -> data.setData(newData), () -> {
+            throw new RuntimeException();
+        });
     }
 
     public Data getDataById(Long id) {
-        return dataRepository.findById(id).get();
+        return dataRepository.findById(id).orElseThrow();
     }
 }

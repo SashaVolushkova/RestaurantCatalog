@@ -29,7 +29,6 @@ public class CService {
         return switch (b.getType()) {
             case One: yield new C(1);
             case Two: yield  new C(2);
-            default: yield null;
         };
     }
 }

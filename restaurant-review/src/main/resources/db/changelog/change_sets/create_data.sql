@@ -16,9 +16,3 @@ create table lazy_data
         constraint data_lazy_fk
             references data
 );
-
-insert into data (data) VALUES ('not_null_data');
-insert into lazy_data (data, data_id) VALUES ('1', 1);
-insert into lazy_data (data, data_id) VALUES ('2', 1);
-insert into lazy_data (data, data_id) VALUES ('3', 1);
-insert into lazy_data (data, data_id) VALUES ('4', 1);

@@ -40,13 +40,13 @@ public class CServiceTest {
         assertNull(c);
     }
 
-    @Test
-    public void testBFalseDefault() throws Exception {
-        B b = new B(false, B.Enum.Default);
-        when(mockB.doSmth(any())).thenReturn(b);
-        C c = service.doSmth();
-        assertNull(c);
-    }
+//    @Test
+//    public void testBFalseDefault() throws Exception {
+//        B b = new B(false, B.Enum.Default);
+//        when(mockB.doSmth(any())).thenReturn(b);
+//        C c = service.doSmth();
+//        assertNull(c);
+//    }
 
     @Test
     public void testCException() throws Exception {

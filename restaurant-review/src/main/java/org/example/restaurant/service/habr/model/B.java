@@ -9,9 +9,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class B {
     public enum Enum {
-        One, Two, Default
+        One, Two
     }
-    private boolean smth = false;
+    private boolean smth;
     private Enum type;
     public boolean isSmth() {
         return smth;
