@@ -16,23 +16,23 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 public class H2TestProfileJPAConfig {
 
-    @Bean
-    @Profile("test")
-    public DataSource dataSource() {
-        DriverManagerDataSource originalDataSource = new DriverManagerDataSource();
-        originalDataSource.setDriverClassName("org.h2.Driver");
-        originalDataSource.setUrl("jdbc:h2:mem:db;DB_CLOSE_DELAY=-1");
-        originalDataSource.setUsername("sa");
-        originalDataSource.setPassword("sa");
-
-        ChainListener listener = new ChainListener();
-        listener.addListener(new DataSourceQueryCountListener());
-        return ProxyDataSourceBuilder
-                .create(originalDataSource)
-                .name("DS-Proxy")
-                .listener(listener)
-                .build();
-    }
+//    @Bean
+//    @Profile("test")
+//    public DataSource dataSource() {
+//        DriverManagerDataSource originalDataSource = new DriverManagerDataSource();
+//        originalDataSource.setDriverClassName("org.h2.Driver");
+//        originalDataSource.setUrl("jdbc:h2:mem:db;DB_CLOSE_DELAY=-1");
+//        originalDataSource.setUsername("sa");
+//        originalDataSource.setPassword("sa");
+//
+//        ChainListener listener = new ChainListener();
+//        listener.addListener(new DataSourceQueryCountListener());
+//        return ProxyDataSourceBuilder
+//                .create(originalDataSource)
+//                .name("DS-Proxy")
+//                .listener(listener)
+//                .build();
+//    }
 
     // configure entityManagerFactory
     // configure transactionManager

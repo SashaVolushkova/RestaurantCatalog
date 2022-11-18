@@ -1,27 +1,41 @@
 package org.example.restaurant.service.habr;
 
 import org.example.restaurant.Application;
-import org.example.restaurant.util.H2TestProfileJPAConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-@SpringBootTest(classes = {
-        Application.class,
-        H2TestProfileJPAConfig.class})
-@TestPropertySource(properties = "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration")
+@SpringBootTest(classes = {Application.class})
 @ActiveProfiles("test")
 @Sql(value = "/data/insert_data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(value = "/data/remove_data.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@Testcontainers
 public class ServiceWithDbTest {
+    @Container
+    private static PostgreSQLContainer postgresqlContainer = new PostgreSQLContainer()
+            .withDatabaseName("foo")
+            .withUsername("foo")
+            .withPassword("secret");
+
+    @DynamicPropertySource
+    static void dataSourceProperty(DynamicPropertyRegistry registry) {
+        postgresqlContainer.start();
+        registry.add("spring.datasource.url", postgresqlContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", postgresqlContainer::getUsername);
+        registry.add("spring.datasource.password", postgresqlContainer::getPassword);
+    }
     @Autowired
     private ServiceWithDbForTest service;
 
