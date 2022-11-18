@@ -12,16 +12,24 @@ public class CService {
     private final AService aService;
     private final BService bService;
 
-    public C doSmth() {
+    public C doSmth() throws CException {
         A a = aService.doSmth();
-        B b = bService.doSmth(a);
-        if(b.isSmth()) {
+        B b;
+        try {
+            b = bService.doSmth(a);
+        } catch (Exception e) {
+            throw new CException();
+        }
+        return getCObjectFromBandA(b);
+    }
+    private C getCObjectFromBandA(B b) {
+        if(b.isSmth() || b.getType() == null) {
             return null;
         }
-        return getCObjectFromBandA(a, b);
-    }
-
-    private C getCObjectFromBandA(A a, B b) {
-        return new C();
+        return switch (b.getType()) {
+            case One: yield new C(1);
+            case Two: yield  new C(2);
+            default: yield null;
+        };
     }
 }
