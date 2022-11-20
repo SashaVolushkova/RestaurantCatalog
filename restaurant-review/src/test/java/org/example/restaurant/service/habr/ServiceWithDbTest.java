@@ -8,7 +8,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -43,13 +42,11 @@ public class ServiceWithDbTest {
     private ServiceWithDbLazy lazyService;
 
     @Test
-    @Transactional
     public void testTransactional() {
         service.updateData(1L, null);
     }
 
     @Test
-    @Transactional
     public void testLazy() {
         List<String> strings = lazyService.doSmthWithLazy(1L);
         assertArrayEquals(new String[] {"1", "2", "3", "4"}, strings.toArray());
