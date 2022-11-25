@@ -5,7 +5,7 @@ import lombok.Getter;
 public class C {
     @Getter
     final private int num;
-    public C(int num) {
-        this.num = num;
+    public C(B num) {
+        this.num = 1;
     }
 }

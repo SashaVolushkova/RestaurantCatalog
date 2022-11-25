@@ -23,12 +23,6 @@ public class CService {
         return getCObjectFromBandA(b);
     }
     private C getCObjectFromBandA(B b) {
-        if(b.isSmth() || b.getType() == null) {
-            return null;
-        }
-        return switch (b.getType()) {
-            case One: yield new C(1);
-            case Two: yield  new C(2);
-        };
+        return new C(b);
     }
 }

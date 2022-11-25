@@ -14,6 +14,7 @@ public class BService {
         return switch (a.getAnInt()) {
             case 1: yield  new B(false, B.Enum.One);
             case 2: yield  new B(true, B.Enum.Two);
+            case 3: throw new RuntimeException();
             default: throw new Exception();
         };
     }
